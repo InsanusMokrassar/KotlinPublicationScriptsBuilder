@@ -20,7 +20,7 @@ Instead of `artifact.jar` place name of loaded file. Currently in [releases](htt
 
 `./gradlew clean build`
 
-In case you wish to launch: `./gradlew run`. You may pass your configuration name with `./gradlew run --args="path/to/config.kpsb"`. Besides, you may create jar for your OS with `./gradlew packageUberJarForCurrentOS`, but with high probability you will require at least JDK 14 for this operation.
+In case you wish to launch: `./gradlew run`. You may pass your configuration name with `./gradlew run --args="path/to/config.kpsb"`. Besides, you may create jar for your OS with `./gradlew packageUberJarForCurrentOS`. Besides you may wish to create distributable files, than you will need to run `./gradlew createDistributable`, but with high probability you will require at least JDK 14 for this operation.
 
 ## Output
 
