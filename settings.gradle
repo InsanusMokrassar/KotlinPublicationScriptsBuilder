@@ -5,4 +5,21 @@ pluginManagement {
     }
 }
 
-rootProject.name = 'KotlinPublicationScriptsBuilder'
+rootProject.name = 'kmppscriptbuilder'
+
+String[] includes = [
+        ":core",
+        ":desktop"
+]
+
+
+includes.each { originalName ->
+    String projectDirectory = "${rootProject.projectDir.getAbsolutePath()}${originalName.replaceAll(":", File.separator)}"
+    String projectName = "${rootProject.name}${originalName.replaceAll(":", ".")}"
+    String projectIdentifier = ":${projectName}"
+    include projectIdentifier
+    ProjectDescriptor project = project(projectIdentifier)
+    project.name = projectName
+    project.projectDir = new File(projectDirectory)
+}
+
