@@ -4,3 +4,14 @@ plugins {
 }
 
 apply from: "$mppJsProjectPresetPath"
+
+kotlin {
+    sourceSets {
+        commonMain {
+            dependencies {
+                implementation project(":kmppscriptbuilder.core")
+                implementation "dev.inmo:micro_utils.common:$micro_utils_version"
+            }
+        }
+    }
+}

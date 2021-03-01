@@ -17,8 +17,6 @@ jobs:
         run: echo "version=` cat gradle.properties | grep ^version= | grep -o [\\.0-9]* `" >> $GITHUB_ENV
       - name: Build
         run: ./gradlew packageUberJarForCurrentOS
-        env:
-          additional_version: ""
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1

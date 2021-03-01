@@ -1,11 +1,13 @@
-project.version = "$version" + System.getenv("additional_version")
+project.version = "$version" + (System.getenv("additional_version") != null ? System.getenv("additional_version") : "")
 project.group = "$group"
 
 // apply from: "$publishGradlePath"
 
 kotlin {
     js (IR) {
-        browser()
+        browser {
+            binaries.executable()
+        }
         nodejs()
     }
 
