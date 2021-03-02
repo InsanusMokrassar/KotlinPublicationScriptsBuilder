@@ -6,10 +6,18 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.DesktopPlatform
+import androidx.compose.ui.res.loadSvgResource
 import androidx.compose.ui.res.svgResource
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import dev.inmo.kmppscriptbuilder.core.models.Config
 import dev.inmo.kmppscriptbuilder.desktop.utils.*
+import dev.inmo.micro_utils.coroutines.safelyWithoutExceptions
+import java.awt.Desktop
+import java.lang.Exception
+import java.net.URL
 
 class BuilderView : View() {
     private val projectTypeView = ProjectTypeView()
