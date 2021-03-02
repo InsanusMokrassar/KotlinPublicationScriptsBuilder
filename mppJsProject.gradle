@@ -4,14 +4,18 @@ project.group = "$group"
 // apply from: "$publishGradlePath"
 
 kotlin {
-    android {
-        publishAllLibraryVariants()
+    js (IR) {
+        browser {
+            binaries.executable()
+        }
+        nodejs()
     }
 
     sourceSets {
         commonMain {
             dependencies {
                 implementation kotlin('stdlib')
+                api "org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlin_serialisation_core_version"
             }
         }
         commonTest {
@@ -20,7 +24,11 @@ kotlin {
                 implementation kotlin('test-annotations-common')
             }
         }
+        jsTest {
+            dependencies {
+                implementation kotlin('test-js')
+                implementation kotlin('test-junit')
+            }
+        }
     }
 }
-
-apply from: "$defaultAndroidSettingsPresetPath"

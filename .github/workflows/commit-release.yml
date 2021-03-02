@@ -1,4 +1,7 @@
-on: [push]
+on:
+  push:
+    branches:
+      - master
 
 name: Commit release
 
@@ -16,9 +19,13 @@ jobs:
       - name: Set version from gradle.properties
         run: echo "version=` cat gradle.properties | grep ^version= | grep -o [\\.0-9]* `" >> $GITHUB_ENV
       - name: Build
-        run: ./gradlew packageUberJarForCurrentOS
-        env:
-          additional_version: ""
+        run: ./gradlew build packageUberJarForCurrentOS
+      - name: Publish Web
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./web/build/distributions
+          publish_branch: site
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1

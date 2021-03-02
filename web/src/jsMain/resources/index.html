@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Kotlin Publication Scripts Builder</title>
+    <!-- UIkit CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.6.17/dist/css/uikit.min.css" />
+</head>
+<body>
+    <nav class="uk-navbar-container" uk-navbar>
+        <div class="uk-navbar-left">
+            <div class="uk-padding-small uk-text-lead">Kotlin Publication Scripts Builder</div>
+        </div>
+        <div class="uk-navbar-right">
+            <ul class="uk-navbar-nav">
+                <li uk-tooltip="title: Open config" id="openConfig"><a href="#"><span uk-icon="icon: pull"></span></a></li><!--Open file-->
+                <li uk-tooltip="title: Save config" id="saveConfig"><a href="#"><span uk-icon="icon: push"></span></a></li><!--Save file-->
+                <li uk-tooltip="title: Export script" id="exportScript"><a href="#"><span uk-icon="icon: upload"></span></a></li><!--Save file-->
+            </ul>
+        </div>
+    </nav>
+    <form class="uk-padding-small">
+        <fieldset class="uk-fieldset">
+            <legend class="uk-legend">Project type</legend>
+            <div class="uk-padding-small">
+                <ul class="uk-subnav uk-subnav-pill">
+                    <li id="mppProjectType" class="uk-active"><a href="#">Multiplatform</a></li>
+                    <li id="jvmProjectType"><a href="#">JVM</a></li>
+                </ul>
+            </div>
+            <legend class="uk-legend">Licenses</legend>
+            <div id="licensesListDiv" class="uk-padding-small">
+<!--                <div class="uk-margin uk-width-1-1">-->
+<!--                    <input id="searchFilterInput" class="uk-input uk-width-expand" type="text" placeholder="License search filter">-->
+<!--                </div>-->
+<!--                <button class="uk-button uk-button-primary">Add empty license</button>-->
+            </div>
+
+            <legend class="uk-legend">Project information</legend>
+
+            <div class="uk-padding-small">
+                <div class="uk-margin uk-width-1-1">
+                    <label class="uk-form-label" for="projectNameInput">Public project name</label>
+                    <input id="projectNameInput" class="uk-input uk-width-expand" type="text" placeholder="${project.name}">
+                </div>
+                <div class="uk-margin uk-width-1-1">
+                    <label class="uk-form-label" for="projectDescriptionInput">Public project description</label>
+                    <input id="projectDescriptionInput" class="uk-input uk-width-expand" type="text" placeholder="${project.name}">
+                </div>
+                <div class="uk-margin uk-width-1-1">
+                    <label class="uk-form-label" for="projectUrlInput">Public project URL</label>
+                    <input id="projectUrlInput" class="uk-input uk-width-expand" type="text" placeholder="Type url to github or other source with readme">
+                </div>
+                <div class="uk-margin uk-width-1-1">
+                    <label class="uk-form-label" for="projectVCSUrlInput">Public project VCS URL (with .git)</label>
+                    <input id="projectVCSUrlInput" class="uk-input uk-width-expand" type="text" placeholder="Type url to github .git file">
+                </div>
+
+                <div class="uk-margin">
+                    <label><input id="includeGpgSignToggle" class="uk-checkbox" type="checkbox" checked> Include GPG Signing</label>
+                </div>
+                <div class="uk-margin">
+                    <label><input id="includeMavenCentralTargetRepoToggle" class="uk-checkbox" type="checkbox"> Include publication to MavenCentral</label>
+                </div>
+            </div>
+
+            <legend class="uk-legend">Developers info</legend>
+            <div id="developersListDiv" class="uk-padding-small"></div>
+
+            <legend class="uk-legend">Repositories info</legend>
+            <div id="repositoriesListDiv" class="uk-padding-small"></div>
+        </fieldset>
+    </form>
+    <!-- UIkit JS -->
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.6.17/dist/js/uikit.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.6.17/dist/js/uikit-icons.min.js"></script>
+    <!-- Internal JS -->
+    <script src="kmppscriptbuilder.web.js"></script>
+</body>
+</html>
