@@ -14,12 +14,11 @@ fun saveFile(content: String, filename: String) {
         setAttribute("style", "visibility:hidden; display: none")
     } as HTMLAnchorElement
     val blob = Blob(arrayOf(content), BlobPropertyBag(
-        "text/plain;charset=utf-8"
+        "application/*;charset=utf-8"
     ))
     val url = URL.createObjectURL(blob)
     a.href = url
     a.download = filename
-    a.target = "_blank"
     a.click()
     URL.revokeObjectURL(url)
     a.remove()
