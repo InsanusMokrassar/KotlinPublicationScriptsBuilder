@@ -22,14 +22,20 @@ data class MavenPublishingRepository(
         name.toUpperCase()
     }
 
-    fun build(indent: String) = """maven {
-    name = "$name"
-    url = uri("$url")
-    credentials {
-        username = project.hasProperty('${nameCapitalized}_USER') ? project.property('${nameCapitalized}_USER') : System.getenv('${nameCapitalized}_USER')
-        password = project.hasProperty('${nameCapitalized}_PASSWORD') ? project.property('${nameCapitalized}_PASSWORD') : System.getenv('${nameCapitalized}_PASSWORD')
+    fun build(indent: String): String {
+        val usernameProperty = "${nameCapitalized}_USER"
+        val passwordProperty = "${nameCapitalized}_PASSWORD"
+        return """if ((project.hasProperty('${usernameProperty}') || System.getenv('${usernameProperty}') != null) && (project.hasProperty('${passwordProperty}') || System.getenv('${passwordProperty}') != null)) {
+    maven {
+        name = "$name"
+        url = uri("$url")
+        credentials {
+            username = project.hasProperty('${usernameProperty}') ? project.property('${usernameProperty}') : System.getenv('${usernameProperty}')
+            password = project.hasProperty('${passwordProperty}') ? project.property('${passwordProperty}') : System.getenv('${passwordProperty}')
+        }
     }
 }""".replace("\n", "\n$indent")
+    }
 }
 
 val SonatypeRepository = MavenPublishingRepository("sonatype", "https://oss.sonatype.org/service/local/staging/deploy/maven2/")
