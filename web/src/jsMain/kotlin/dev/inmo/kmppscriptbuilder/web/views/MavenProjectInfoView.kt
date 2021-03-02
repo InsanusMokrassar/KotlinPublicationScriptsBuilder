@@ -14,6 +14,7 @@ class MavenProjectInfoView : View {
     private val includeGpgElement = document.getElementById("includeGpgSignToggle") as HTMLInputElement
     private val includeMavenCentralElement = document.getElementById("includeMavenCentralTargetRepoToggle") as HTMLInputElement
     private val developersView = DevelopersView(document.getElementById("developersListDiv") as HTMLElement)
+    private val repositoriesView = RepositoriesView(document.getElementById("repositoriesListDiv") as HTMLElement)
 
     var mavenConfig: MavenConfig
         get() = MavenConfig(
@@ -22,9 +23,8 @@ class MavenProjectInfoView : View {
             urlElement.value,
             vcsUrlElement.value,
             includeGpgElement.checked,
-            developersView.developers,// TODO:: Add developers
-            // TODO:: Add repositories
-            if (includeMavenCentralElement.checked) {
+            developersView.developers,
+            repositoriesView.repositories + if (includeMavenCentralElement.checked) {
                 listOf(SonatypeRepository)
             } else {
                 emptyList()
@@ -37,8 +37,8 @@ class MavenProjectInfoView : View {
             vcsUrlElement.value = value.vcsUrl
             includeGpgElement.checked = value.includeGpgSigning
             developersView.developers = value.developers
-            // TODO:: Add repositories
             val reposWithoutSonatype = value.repositories.filter { it != SonatypeRepository }
             includeMavenCentralElement.checked = value.repositories.size != reposWithoutSonatype.size
+            repositoriesView.repositories = value.repositories
         }
 }

@@ -1,61 +1,57 @@
 package dev.inmo.kmppscriptbuilder.web.views
 
-import dev.inmo.micro_utils.common.calculateDiff
-import kotlinx.browser.document
+import dev.inmo.micro_utils.common.calculateStrictDiff
 import kotlinx.dom.appendElement
 import org.w3c.dom.HTMLElement
 
 abstract class ListView<T>(
-    private val rootElement: HTMLElement,
-    addButtonText: String = "Add",
-    private val removeButtonText: String = "Remove"
+    protected val rootElement: HTMLElement,
+    useSimpleDiffStrategy: Boolean = false
 ) : View {
-    protected val elements = mutableMapOf<T, HTMLElement>()
+    protected val elements = mutableListOf<HTMLElement>()
+    private val diffHandling: (old: List<T>, new: List<T>) -> Unit = if (useSimpleDiffStrategy) {
+        { _, new ->
+            elements.forEach { it.remove() }
+            elements.clear()
+            new.forEach {
+                val element = instantiateElement()
+                elements.add(element)
+                element.placeElement(it)
+            }
+        }
+    } else {
+        {  old, new ->
+            val diff = old.calculateStrictDiff(new)
+            diff.removed.forEach {
+                elements[it.index].remove()
+                elements.removeAt(it.index)
+                println(it.value)
+            }
+            diff.added.forEach {
+                val element = instantiateElement()
+                elements.add(element)
+                element.placeElement(it.value)
+            }
+            diff.replaced.forEach { (old, new) ->
+                val element = elements.getOrNull(old.index) ?.also { it.updateElement(old.value, new.value) }
+                if (element == null) {
+                    val newElement = instantiateElement()
+                    newElement.placeElement(new.value)
+                    elements[new.index] = newElement
+                }
+            }
+        }
+    }
     protected var data: List<T> = emptyList()
         set(value) {
             val old = field
             field = value
-            val diff = old.calculateDiff(value)
-            diff.removed.forEach {
-                rootElement.removeChild(elements[it.value] ?: return@forEach)
-            }
-            diff.added.forEach {
-                val element = instantiateElement()
-                element.placeElement(it.value)
-                elements[it.value] = element
-                element.addRemoveButton(it.value)
-            }
-            diff.replaced.forEach { (old, new) ->
-                val element = elements[old.value] ?.also { it.updateElement(old.value, new.value) }
-                if (element == null) {
-                    val newElement = instantiateElement()
-                    newElement.placeElement(new.value)
-                    elements[new.value] = newElement
-                }
-            }
+            diffHandling(old, value)
         }
 
-    init {
-        rootElement.createButton(addButtonText).apply {
-            onclick = {
-                data += createPlainObject()
-                Unit
-            }
-        }
-    }
-
-    protected abstract fun createPlainObject(): T
     protected abstract fun HTMLElement.placeElement(value: T)
     protected abstract fun HTMLElement.updateElement(from: T, to: T)
 
-    private fun HTMLElement.addRemoveButton(value: T) {
-        createButton(removeButtonText).onclick = {
-            data = data.filter {
-                it != value
-            }
-            Unit
-        }
-    }
     private fun instantiateElement() = rootElement.appendElement("div") {
         classList.add("uk-padding-small")
     } as HTMLElement
