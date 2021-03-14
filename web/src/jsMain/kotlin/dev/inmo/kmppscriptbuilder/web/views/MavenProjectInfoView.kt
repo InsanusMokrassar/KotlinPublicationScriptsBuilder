@@ -39,6 +39,6 @@ class MavenProjectInfoView : View {
             developersView.developers = value.developers
             val reposWithoutSonatype = value.repositories.filter { it != SonatypeRepository }
             includeMavenCentralElement.checked = value.repositories.size != reposWithoutSonatype.size
-            repositoriesView.repositories = value.repositories
+            repositoriesView.repositories = reposWithoutSonatype
         }
 }
