@@ -21,7 +21,7 @@ class RepositoriesView(rootElement: HTMLElement) : MutableListView<MavenPublishi
 
     override fun HTMLElement.addContentBeforeRemoveButton(value: MavenPublishingRepository) {
         createTextField("Repository name", "This name will be used to identify repository in grade").value = value.name
-        createTextField("Repository URL", "For example: https://repo.maven.apache.org/maven2/").value = value.name
+        createTextField("Repository URL", "For example: https://repo.maven.apache.org/maven2/").value = value.url
     }
 
     override fun HTMLElement.updateElement(from: MavenPublishingRepository, to: MavenPublishingRepository) {
