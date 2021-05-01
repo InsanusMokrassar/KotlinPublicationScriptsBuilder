@@ -1,7 +1,6 @@
 package dev.inmo.kmppscriptbuilder.web.views
 
-import dev.inmo.kmppscriptbuilder.core.models.MavenConfig
-import dev.inmo.kmppscriptbuilder.core.models.SonatypeRepository
+import dev.inmo.kmppscriptbuilder.core.models.*
 import kotlinx.browser.document
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLInputElement
@@ -18,8 +17,8 @@ class MavenProjectInfoView : View {
 
     var mavenConfig: MavenConfig
         get() = MavenConfig(
-            nameElement.value,
-            descriptionElement.value,
+            nameElement.value.ifBlank { defaultProjectName },
+            descriptionElement.value.ifBlank { defaultProjectDescription },
             urlElement.value,
             vcsUrlElement.value,
             includeGpgElement.checked,

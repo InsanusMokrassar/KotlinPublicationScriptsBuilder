@@ -2,6 +2,9 @@ package dev.inmo.kmppscriptbuilder.core.models
 
 import kotlinx.serialization.Serializable
 
+const val defaultProjectName = "\${project.name}"
+const val defaultProjectDescription = "\${project.name}"
+
 @Serializable
 data class MavenConfig(
     val name: String,

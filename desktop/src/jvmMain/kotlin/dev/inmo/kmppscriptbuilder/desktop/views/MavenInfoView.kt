@@ -2,8 +2,7 @@ package dev.inmo.kmppscriptbuilder.desktop.views
 
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.runtime.*
-import dev.inmo.kmppscriptbuilder.core.models.MavenConfig
-import dev.inmo.kmppscriptbuilder.core.models.SonatypeRepository
+import dev.inmo.kmppscriptbuilder.core.models.*
 import dev.inmo.kmppscriptbuilder.desktop.utils.*
 
 class MavenInfoView : VerticalView("Project information") {
@@ -18,8 +17,8 @@ class MavenInfoView : VerticalView("Project information") {
 
     var mavenConfig: MavenConfig
         get() = MavenConfig(
-            projectNameProperty,
-            projectDescriptionProperty,
+            projectNameProperty.ifBlank { defaultProjectName },
+            projectDescriptionProperty.ifBlank { defaultProjectDescription },
             projectUrlProperty,
             projectVcsUrlProperty,
             includeGpgSignProperty,
