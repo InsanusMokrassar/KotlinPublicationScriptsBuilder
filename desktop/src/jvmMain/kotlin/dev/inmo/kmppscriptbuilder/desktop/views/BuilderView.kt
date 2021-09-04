@@ -6,18 +6,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.platform.DesktopPlatform
-import androidx.compose.ui.res.loadSvgResource
-import androidx.compose.ui.res.svgResource
-import androidx.compose.ui.unit.Density
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import dev.inmo.kmppscriptbuilder.core.models.Config
 import dev.inmo.kmppscriptbuilder.desktop.utils.*
-import dev.inmo.micro_utils.coroutines.safelyWithoutExceptions
-import java.awt.Desktop
-import java.lang.Exception
-import java.net.URL
 
 class BuilderView : View() {
     private val projectTypeView = ProjectTypeView()
@@ -53,7 +45,7 @@ class BuilderView : View() {
                             }
                         ) {
                             Image(
-                                painter = svgResource("images/open_file.svg"),
+                                painter = painterResource("images/open_file.svg"),
                                 contentDescription = "Open file"
                             )
                         }
@@ -65,7 +57,7 @@ class BuilderView : View() {
                                 }
                             ) {
                                 Image(
-                                    painter = svgResource("images/save_file.svg"),
+                                    painter = painterResource("images/save_file.svg"),
                                     contentDescription = "Save file"
                                 )
                             }
@@ -78,7 +70,7 @@ class BuilderView : View() {
                                 }
                             ) {
                                 Image(
-                                    painter = svgResource("images/export_gradle.svg"),
+                                    painter = painterResource("images/export_gradle.svg"),
                                     contentDescription = "Export Gradle script"
                                 )
                             }
@@ -92,7 +84,7 @@ class BuilderView : View() {
                             }
                         ) {
                             Image(
-                                painter = svgResource("images/save_as.svg"),
+                                painter = painterResource("images/save_as.svg"),
                                 contentDescription = "Export Gradle script"
                             )
                         }

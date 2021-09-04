@@ -53,7 +53,7 @@ class LicensesView: VerticalView("Licenses") {
             licensesOffersToShow.clear()
             if (licenseSearchFilter.isNotEmpty()) {
                 licensesOffersToShow.addAll(
-                    availableLicensesState.filter { filterText.all { symbol -> symbol.toLowerCase() in it.title } }
+                    availableLicensesState.filter { filterText.all { symbol -> symbol.lowercaseChar() in it.title } }
                 )
             }
         }

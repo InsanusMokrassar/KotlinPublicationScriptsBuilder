@@ -1,7 +1,6 @@
 package dev.inmo.kmppscriptbuilder.desktop.utils
 
 import java.awt.Desktop
-import java.lang.Exception
 import java.net.URI
 
 fun openLink(link: String): Boolean {

@@ -30,19 +30,19 @@ suspend fun HttpClient.getLicenses(): Map<String, License> {
 
 suspend fun HttpClient.searchLicense(name: String): List<License> {
     val licenses = licenses ?: getLicenses()
-    val lowerCase = name.toLowerCase()
-    val upperCase = name.toUpperCase()
+    val lowerCase = name.lowercase()
+    val upperCase = name.uppercase()
     return licenses.values.filter {
-        it.title.toLowerCase().contains(lowerCase) || it.title.toUpperCase().contains(upperCase) || it.title.contains(name)
-            || it.id.toLowerCase().contains(lowerCase) || it.id.toUpperCase().contains(upperCase) || it.id.contains(name)
+        it.title.lowercase().contains(lowerCase) || it.title.uppercase().contains(upperCase) || it.title.contains(name)
+            || it.id.lowercase().contains(lowerCase) || it.id.uppercase().contains(upperCase) || it.id.contains(name)
     }
 }
 
 fun Map<String, License>.searchLicense(name: String): List<License> {
-    val lowerCase = name.toLowerCase()
-    val upperCase = name.toUpperCase()
+    val lowerCase = name.lowercase()
+    val upperCase = name.uppercase()
     return values.filter {
-        it.title.toLowerCase().contains(lowerCase) || it.title.toUpperCase().contains(upperCase) || it.title.contains(name)
-            || it.id.toLowerCase().contains(lowerCase) || it.id.toUpperCase().contains(upperCase) || it.id.contains(name)
+        it.title.lowercase().contains(lowerCase) || it.title.uppercase().contains(upperCase) || it.title.contains(name)
+            || it.id.lowercase().contains(lowerCase) || it.id.uppercase().contains(upperCase) || it.id.contains(name)
     }
 }

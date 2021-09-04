@@ -3,12 +3,14 @@ package dev.inmo.kmppscriptbuilder.desktop
 import androidx.compose.desktop.Window
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material.Colors
+import androidx.compose.material.MaterialTheme
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import dev.inmo.kmppscriptbuilder.desktop.utils.*
-import dev.inmo.kmppscriptbuilder.desktop.views.*
+import dev.inmo.kmppscriptbuilder.desktop.utils.init
+import dev.inmo.kmppscriptbuilder.desktop.utils.loadConfigFile
+import dev.inmo.kmppscriptbuilder.desktop.views.BuilderView
 import java.io.File
 
 //private val uncaughtExceptionsBC = BroadcastChannel<DefaultErrorHandler.ErrorEvent>(Channel.CONFLATED)

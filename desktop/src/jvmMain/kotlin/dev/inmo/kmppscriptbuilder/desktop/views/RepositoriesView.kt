@@ -2,7 +2,7 @@ package dev.inmo.kmppscriptbuilder.desktop.views
 
 import androidx.compose.runtime.*
 import dev.inmo.kmppscriptbuilder.core.models.MavenPublishingRepository
-import dev.inmo.kmppscriptbuilder.desktop.utils.*
+import dev.inmo.kmppscriptbuilder.desktop.utils.CommonTextField
 
 class RepositoryState(
     name: String = "",
