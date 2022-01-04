@@ -1,7 +1,12 @@
 package dev.inmo.kmppscriptbuilder.desktop.views
 
-import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.VerticalAlignmentLine
+import androidx.compose.ui.unit.dp
 import dev.inmo.kmppscriptbuilder.core.models.*
 import dev.inmo.kmppscriptbuilder.desktop.utils.*
 
@@ -45,6 +50,24 @@ class MavenInfoView : VerticalView("Project information") {
 //            developersView.developers = value.developers
         }
 
+    @Composable
+    private fun addGpgSigningButton(gpgSigning: GpgSigning) {
+        if (gpgSignProperty == gpgSigning) {
+            Button({}, Modifier.padding(8.dp)) {
+                Text(gpgSigning.name)
+            }
+        } else {
+            OutlinedButton(
+                {
+                    gpgSignProperty = gpgSigning
+                },
+                Modifier.padding(8.dp)
+            ) {
+                Text(gpgSigning.name)
+            }
+        }
+    }
+
     override val content: @Composable ColumnScope.() -> Unit = {
         CommonTextField(
             projectNameProperty,
@@ -63,12 +86,12 @@ class MavenInfoView : VerticalView("Project information") {
             "Public project VCS URL (with .git)"
         ) { projectVcsUrlProperty = it }
 
-
-//        SwitchWithLabel(
-//            "Include GPG Signing",
-//            includeGpgSignProperty,
-//            placeSwitchAtTheStart = true
-//        ) { includeGpgSignProperty = it }
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text("Gpg Signing: ")
+            addGpgSigningButton(GpgSigning.Disabled)
+            addGpgSigningButton(GpgSigning.Optional)
+            addGpgSigningButton(GpgSigning.Enabled)
+        }
 
         SwitchWithLabel(
             "Include publication to MavenCentral",

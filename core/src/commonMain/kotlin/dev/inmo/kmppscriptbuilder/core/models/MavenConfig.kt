@@ -6,13 +6,13 @@ const val defaultProjectName = "\${project.name}"
 const val defaultProjectDescription = "\${project.name}"
 
 @Serializable
-sealed class GpgSigning {
+sealed class GpgSigning(val name: String) {
     @Serializable
-    object Disabled : GpgSigning()
+    object Disabled : GpgSigning("Disabled")
     @Serializable
-    object Optional : GpgSigning()
+    object Optional : GpgSigning("Optional")
     @Serializable
-    object Enabled : GpgSigning()
+    object Enabled : GpgSigning("Enabled")
 }
 
 @Serializable

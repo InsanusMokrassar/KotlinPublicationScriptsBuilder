@@ -1,11 +1,13 @@
 package dev.inmo.kmppscriptbuilder.desktop.views
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import dev.inmo.kmppscriptbuilder.core.models.Config
@@ -28,6 +30,34 @@ class BuilderView : View() {
             saveAvailableState = true
         }
 
+    @OptIn(ExperimentalFoundationApi::class)
+    @Composable
+    private fun createIcon(
+        tooltip: String,
+        resource: String,
+        onClick: () -> Unit
+    ) {
+        TooltipArea(
+            tooltip = {
+                Surface(
+                    modifier = Modifier.shadow(4.dp),
+                    color = MaterialTheme.colors.primarySurface,
+                    shape = RoundedCornerShape(4.dp)
+                ) {
+                    Text(tooltip, modifier = Modifier.padding(10.dp), color = MaterialTheme.colors.onPrimary)
+                }
+            }
+        ) {
+            IconButton(onClick) {
+                Image(
+                    painter = painterResource(resource),
+                    contentDescription = tooltip
+                )
+            }
+        }
+    }
+
+    @OptIn(ExperimentalFoundationApi::class)
     @Composable
     override fun build() {
         Box(Modifier.fillMaxSize()) {
@@ -37,56 +67,28 @@ class BuilderView : View() {
                         CommonText("Kotlin publication scripts builder", Modifier.clickable { println(config) })
                     },
                     actions = {
-                        IconButton(
-                            {
-                                loadConfig()?.also {
-                                    config = it
-                                }
-                            }
-                        ) {
-                            Image(
-                                painter = painterResource("images/open_file.svg"),
-                                contentDescription = "Open file"
-                            )
-                        }
-
-                        if (saveAvailableState) {
-                            IconButton(
-                                {
-                                    saveConfig(config)
-                                }
-                            ) {
-                                Image(
-                                    painter = painterResource("images/save_file.svg"),
-                                    contentDescription = "Save file"
-                                )
+                        createIcon("Open file", "images/open_file.svg") {
+                            loadConfig()?.also {
+                                config = it
                             }
                         }
 
                         if (saveAvailableState) {
-                            IconButton(
-                                {
-                                    exportGradle(config)
-                                }
-                            ) {
-                                Image(
-                                    painter = painterResource("images/export_gradle.svg"),
-                                    contentDescription = "Export Gradle script"
-                                )
+                            createIcon("Save", "images/save_file.svg") {
+                                saveConfig(config)
                             }
                         }
 
-                        IconButton(
-                            {
-                                if (saveAs(config)) {
-                                    saveAvailableState = true
-                                }
+                        if (saveAvailableState) {
+                            createIcon("Export Gradle script", "images/export_gradle.svg") {
+                                exportGradle(config)
                             }
-                        ) {
-                            Image(
-                                painter = painterResource("images/save_as.svg"),
-                                contentDescription = "Export Gradle script"
-                            )
+                        }
+
+                        createIcon("Save as", "images/save_as.svg") {
+                            if (saveAs(config)) {
+                                saveAvailableState = true
+                            }
                         }
                     }
                 )
