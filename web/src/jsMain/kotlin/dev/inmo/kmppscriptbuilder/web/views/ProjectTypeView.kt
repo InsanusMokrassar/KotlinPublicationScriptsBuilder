@@ -8,16 +8,18 @@ import org.w3c.dom.HTMLElement
 class ProjectTypeView : View {
     private val mppProjectTypeElement = document.getElementById("mppProjectType") as HTMLElement
     private val jvmProjectTypeElement = document.getElementById("jvmProjectType") as HTMLElement
+    private val jsProjectTypeElement = document.getElementById("jsProjectType") as HTMLElement
 
     var projectType: ProjectType
-        get() = if (jvmProjectTypeElement.ukActive) {
-            JVMProjectType
-        } else {
-            MultiplatformProjectType
+        get() = when {
+            jvmProjectTypeElement.ukActive -> JVMProjectType
+            jsProjectTypeElement.ukActive -> JSProjectType
+            else -> MultiplatformProjectType
         }
         set(value) {
             mppProjectTypeElement.ukActive = value == MultiplatformProjectType
             jvmProjectTypeElement.ukActive = value == JVMProjectType
+            jsProjectTypeElement.ukActive = value == JSProjectType
         }
 
     init {
@@ -27,6 +29,10 @@ class ProjectTypeView : View {
         }
         jvmProjectTypeElement.onclick = {
             projectType = JVMProjectType
+            Unit
+        }
+        jsProjectTypeElement.onclick = {
+            projectType = JSProjectType
             Unit
         }
     }

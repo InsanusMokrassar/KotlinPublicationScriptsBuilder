@@ -27,15 +27,11 @@
                 <ul class="uk-subnav uk-subnav-pill">
                     <li id="mppProjectType" class="uk-active"><a href="#">Multiplatform</a></li>
                     <li id="jvmProjectType"><a href="#">JVM</a></li>
+                    <li id="jsProjectType"><a href="#">JS</a></li>
                 </ul>
             </div>
             <legend class="uk-legend">Licenses</legend>
-            <div id="licensesListDiv" class="uk-padding-small">
-<!--                <div class="uk-margin uk-width-1-1">-->
-<!--                    <input id="searchFilterInput" class="uk-input uk-width-expand" type="text" placeholder="License search filter">-->
-<!--                </div>-->
-<!--                <button class="uk-button uk-button-primary">Add empty license</button>-->
-            </div>
+            <div id="licensesListDiv" class="uk-padding-small"></div>
 
             <legend class="uk-legend">Project information</legend>
 
@@ -58,7 +54,15 @@
                 </div>
 
                 <div class="uk-margin">
-                    <label><input id="includeGpgSignToggle" class="uk-checkbox" type="checkbox" checked> Include GPG Signing</label>
+                    <label>GPG Signing</label>
+
+                    <div class="uk-padding-small">
+                        <ul class="uk-subnav uk-subnav-pill">
+                            <li id="disableGpgSigning" class="uk-active" uk-tooltip="title: Signing will not be added"><a href="#">Disabled</a></li>
+                            <li id="optionalGpgSigning" uk-tooltip="title: Signing will be added, but disabled in case of absence 'signatory.keyId'"><a href="#">Optional</a></li>
+                            <li id="enableGpgSigning" uk-tooltip="title: Signing will be always enabled"><a href="#">Enabled</a></li>
+                        </ul>
+                    </div>
                 </div>
                 <div class="uk-margin">
                     <label><input id="includeMavenCentralTargetRepoToggle" class="uk-checkbox" type="checkbox"> Include publication to MavenCentral</label>

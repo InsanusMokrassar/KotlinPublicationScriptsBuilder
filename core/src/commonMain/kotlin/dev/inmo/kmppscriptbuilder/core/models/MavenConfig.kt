@@ -6,14 +6,26 @@ const val defaultProjectName = "\${project.name}"
 const val defaultProjectDescription = "\${project.name}"
 
 @Serializable
+sealed class GpgSigning {
+    @Serializable
+    object Disabled : GpgSigning()
+    @Serializable
+    object Optional : GpgSigning()
+    @Serializable
+    object Enabled : GpgSigning()
+}
+
+@Serializable
 data class MavenConfig(
     val name: String,
     val description: String,
     val url: String,
     val vcsUrl: String,
-    val includeGpgSigning: Boolean = false,
     val developers: List<Developer>,
-    val repositories: List<MavenPublishingRepository> = emptyList()
+    val repositories: List<MavenPublishingRepository> = emptyList(),
+    val gpgSigning: GpgSigning = GpgSigning.Disabled,
+    @Deprecated("Replaced with gpgSigning")
+    val includeGpgSigning: Boolean = false,
 )
 
 @Serializable

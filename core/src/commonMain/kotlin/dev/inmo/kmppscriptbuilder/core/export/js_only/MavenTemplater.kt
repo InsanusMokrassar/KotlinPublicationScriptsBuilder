@@ -1,24 +1,27 @@
-package dev.inmo.kmppscriptbuilder.core.export.jvm_only
+package dev.inmo.kmppscriptbuilder.core.export.js_only
 
 import dev.inmo.kmppscriptbuilder.core.export.generateMavenConfig
 import dev.inmo.kmppscriptbuilder.core.models.*
 
-fun MavenConfig.buildJvmOnlyMavenConfig(licenses: List<License>): String = """
+fun MavenConfig.buildJsOnlyMavenConfig(licenses: List<License>): String = """
 apply plugin: 'maven-publish'
 
 task javadocJar(type: Jar) {
-    from javadoc
     classifier = 'javadoc'
 }
 task sourcesJar(type: Jar) {
-    from sourceSets.main.allSource
+    kotlin.sourceSets.all {
+        from(kotlin)
+    }
     classifier = 'sources'
 }
 
 publishing {
     publications {
         maven(MavenPublication) {
-            from components.java
+            kotlin.js().components.forEach {
+                from(it)
+            }
 
             artifact javadocJar
             artifact sourcesJar

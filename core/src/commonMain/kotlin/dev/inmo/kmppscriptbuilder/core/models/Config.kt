@@ -1,5 +1,6 @@
 package dev.inmo.kmppscriptbuilder.core.models
 
+import dev.inmo.kmppscriptbuilder.core.export.js_only.buildJsOnlyMavenConfig
 import dev.inmo.kmppscriptbuilder.core.export.jvm_only.buildJvmOnlyMavenConfig
 import dev.inmo.kmppscriptbuilder.core.export.mpp.buildMultiplatformMavenConfig
 import kotlinx.serialization.*
@@ -32,12 +33,6 @@ object ProjectTypeSerializer : KSerializer<ProjectType> {
 
 object MultiplatformProjectType : ProjectType() {
     override val name: String = "Multiplatform"
-//    override fun buildBintrayGradleConfig(
-//        bintrayConfig: BintrayConfig,
-//        licenses: List<License>
-//    ): String = bintrayConfig.buildMultiplatformGradleConfig(
-//        licenses
-//    )
 
     override fun buildMavenGradleConfig(
         mavenConfig: MavenConfig,
@@ -49,12 +44,6 @@ object MultiplatformProjectType : ProjectType() {
 
 object JVMProjectType : ProjectType() {
     override val name: String = "JVM"
-//    override fun buildBintrayGradleConfig(
-//        bintrayConfig: BintrayConfig,
-//        licenses: List<License>
-//    ): String = bintrayConfig.buildJvmOnlyGradleConfig(
-//        licenses
-//    )
 
     override fun buildMavenGradleConfig(
         mavenConfig: MavenConfig,
@@ -62,6 +51,15 @@ object JVMProjectType : ProjectType() {
     ): String = mavenConfig.buildJvmOnlyMavenConfig(
         licenses
     )
+}
+
+object JSProjectType : ProjectType() {
+    override val name: String = "JS"
+
+    override fun buildMavenGradleConfig(
+        mavenConfig: MavenConfig,
+        licenses: List<License>
+    ): String = mavenConfig.buildJsOnlyMavenConfig(licenses)
 }
 
 @Serializable

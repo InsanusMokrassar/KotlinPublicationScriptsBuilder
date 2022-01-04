@@ -10,7 +10,7 @@ class MavenInfoView : VerticalView("Project information") {
     private var projectDescriptionProperty by mutableStateOf("")
     private var projectUrlProperty by mutableStateOf("")
     private var projectVcsUrlProperty by mutableStateOf("")
-    private var includeGpgSignProperty by mutableStateOf(true)
+    private var gpgSignProperty by mutableStateOf<GpgSigning>(GpgSigning.Disabled)
     private var publishToMavenCentralProperty by mutableStateOf(false)
     private val developersView = DevelopersView()
     private val repositoriesView = RepositoriesView()
@@ -21,20 +21,24 @@ class MavenInfoView : VerticalView("Project information") {
             projectDescriptionProperty.ifBlank { defaultProjectDescription },
             projectUrlProperty,
             projectVcsUrlProperty,
-            includeGpgSignProperty,
             developersView.developers,
             repositoriesView.repositories + if (publishToMavenCentralProperty) {
                 listOf(SonatypeRepository)
             } else {
                 emptyList()
-            }
+            },
+            gpgSignProperty
         )
         set(value) {
             projectNameProperty = value.name
             projectDescriptionProperty = value.description
             projectUrlProperty = value.url
             projectVcsUrlProperty = value.vcsUrl
-            includeGpgSignProperty = value.includeGpgSigning
+            gpgSignProperty = if (value.includeGpgSigning) {
+                GpgSigning.Enabled
+            } else {
+                value.gpgSigning
+            }
             publishToMavenCentralProperty = value.repositories.any { it == SonatypeRepository }
             developersView.developers = value.developers
             repositoriesView.repositories = value.repositories.filter { it != SonatypeRepository }
@@ -59,11 +63,12 @@ class MavenInfoView : VerticalView("Project information") {
             "Public project VCS URL (with .git)"
         ) { projectVcsUrlProperty = it }
 
-        SwitchWithLabel(
-            "Include GPG Signing",
-            includeGpgSignProperty,
-            placeSwitchAtTheStart = true
-        ) { includeGpgSignProperty = it }
+
+//        SwitchWithLabel(
+//            "Include GPG Signing",
+//            includeGpgSignProperty,
+//            placeSwitchAtTheStart = true
+//        ) { includeGpgSignProperty = it }
 
         SwitchWithLabel(
             "Include publication to MavenCentral",

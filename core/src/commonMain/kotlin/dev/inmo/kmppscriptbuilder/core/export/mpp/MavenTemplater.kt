@@ -1,56 +1,52 @@
 package dev.inmo.kmppscriptbuilder.core.export.mpp
 
+import dev.inmo.kmppscriptbuilder.core.export.generateMavenConfig
 import dev.inmo.kmppscriptbuilder.core.models.*
 
 fun MavenConfig.buildMultiplatformMavenConfig(licenses: List<License>): String = """
-    apply plugin: 'maven-publish'
-    ${if (includeGpgSigning) "apply plugin: 'signing'\n" else ""}
-    task javadocsJar(type: Jar) {
-        classifier = 'javadoc'
-    }
+apply plugin: 'maven-publish'
 
-    publishing {
-        publications.all {
-            artifact javadocsJar
+task javadocsJar(type: Jar) {
+    classifier = 'javadoc'
+}
 
-            pom {
-                description = "$description"
-                name = "$name"
-                url = "$url"
+publishing {
+    publications.all {
+        artifact javadocsJar
 
-                scm {
-                    developerConnection = "scm:git:[fetch=]${vcsUrl}[push=]${vcsUrl}"
-                    url = "$vcsUrl"
-                }
+        pom {
+            description = "$description"
+            name = "$name"
+            url = "$url"
 
-                developers {
-                    ${developers.joinToString("\n") { """
-                        developer {
-                            id = "${it.id}"
-                            name = "${it.name}"
-                            email = "${it.eMail}"
-                        }
-                    """ }}
-                }
-
-                licenses {
-                    ${licenses.joinToString("\n") { """
-                        license {
-                            name = "${it.title}"
-                            url = "${it.url}"
-                        }
-                    """ }}
-                }
+            scm {
+                developerConnection = "scm:git:[fetch=]${vcsUrl}[push=]${vcsUrl}"
+                url = "$vcsUrl"
             }
-            repositories {
-                ${repositories.joinToString("\n                ") { it.build("                ") }}
+
+            developers {
+                ${developers.joinToString("\n") { """
+                    developer {
+                        id = "${it.id}"
+                        name = "${it.name}"
+                        email = "${it.eMail}"
+                    }
+                """ }}
+            }
+
+            licenses {
+                ${licenses.joinToString("\n") { """
+                    license {
+                        name = "${it.title}"
+                        url = "${it.url}"
+                    }
+                """ }}
             }
         }
+        repositories {
+            ${repositories.joinToString("\n                ") { it.build("                ") }}
+        }
     }
-    ${if (includeGpgSigning) """
-    signing {
-        useGpgCmd()
-        sign publishing.publications
-    }
-    """ else ""}
+}
+    ${gpgSigning.generateMavenConfig()}
 """.trimIndent()
