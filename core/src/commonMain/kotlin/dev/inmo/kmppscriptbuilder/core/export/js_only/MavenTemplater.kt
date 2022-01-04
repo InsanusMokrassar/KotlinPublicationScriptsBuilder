@@ -58,7 +58,7 @@ publishing {
                 }
             }
             repositories {
-                ${repositories.joinToString("\n                    ") { it.build("                    ") }}
+                ${repositories.joinToString("\n                ") { it.build("                ") }}
             }
         }
     }
