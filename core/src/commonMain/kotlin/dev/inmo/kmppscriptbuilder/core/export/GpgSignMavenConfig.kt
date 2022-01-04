@@ -14,7 +14,14 @@ if (project.hasProperty("signing.gnupg.keyName")) {
     
         sign publishing.publications
     }
-}"""
+    
+    task signAll {
+        tasks.withType(Sign).forEach {
+            dependsOn(it)
+        }
+    }
+}
+"""
     GpgSigning.Enabled ->
 """
 apply plugin: 'signing'
@@ -23,5 +30,12 @@ signing {
     useGpgCmd()
 
     sign publishing.publications
-}"""
+}
+
+task signAll {
+    tasks.withType(Sign).forEach {
+        dependsOn(it)
+    }
+}
+"""
 }
