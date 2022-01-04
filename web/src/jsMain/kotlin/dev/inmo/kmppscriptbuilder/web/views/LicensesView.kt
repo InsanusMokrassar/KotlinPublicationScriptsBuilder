@@ -48,7 +48,7 @@ class LicensesView(
                     emptyList()
                 } else {
                     licensesTemplates.filter {
-                        val lowercasedTitle = it.title.toLowerCase()
+                        val lowercasedTitle = it.title.lowercase()
                         lowercased.all { it in lowercasedTitle }
                     }
                 }
@@ -57,12 +57,12 @@ class LicensesView(
         }
         private val searchElement = rootElement.createTextField("Quick add", "Type some license name part to find it").apply {
             oninput = {
-                changeActor.offer(Unit)
+                changeActor.trySend(Unit)
                 false
             }
         }
         private var searchString: String
-            get() = searchElement.value.toLowerCase()
+            get() = searchElement.value.lowercase()
             set(value) {
                 searchElement.value = value
             }
@@ -71,7 +71,7 @@ class LicensesView(
             createCommonButton(value.title).onclick = {
                 searchString = ""
                 licensesView.licenses += value
-                changeActor.offer(Unit)
+                changeActor.trySend(Unit)
                 false
             }
         }

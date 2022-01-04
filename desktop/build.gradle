@@ -10,7 +10,6 @@ kotlin {
     jvm {
         compilations.main.kotlinOptions {
             jvmTarget = "11"
-            useIR = true
         }
     }
     sourceSets {

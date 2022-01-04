@@ -10,3 +10,4 @@ build/
 out/
 
 local.properties
+kotlin-js-store/
