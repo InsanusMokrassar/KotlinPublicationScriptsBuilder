@@ -5,10 +5,8 @@ project.group = "$group"
 
 kotlin {
     js (IR) {
-        browser {
-            binaries.executable()
-        }
-        nodejs()
+        browser()
+        binaries.executable()
     }
 
     sourceSets {

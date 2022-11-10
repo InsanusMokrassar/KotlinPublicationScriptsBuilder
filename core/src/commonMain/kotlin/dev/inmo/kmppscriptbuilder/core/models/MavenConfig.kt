@@ -31,23 +31,67 @@ data class MavenConfig(
 @Serializable
 data class MavenPublishingRepository(
     val name: String,
-    val url: String
+    val url: String,
+    val credsType: CredentialsType = CredentialsType.UsernameAndPassword(
+        "${name.uppercase()}_USER",
+        "${name.uppercase()}_PASSWORD"
+    )
 ) {
-    private val nameCapitalized by lazy {
-        name.toUpperCase()
-    }
+    val defaultUsernameProperty = "${name.uppercase()}_USER"
+    val defaultPasswordProperty = "${name.uppercase()}_PASSWORD"
+    val defaultHeaderValueProperty = "${name.uppercase()}_TOKEN"
 
-    fun build(indent: String): String {
-        val usernameProperty = "${nameCapitalized}_USER"
-        val passwordProperty = "${nameCapitalized}_PASSWORD"
-        return """if ((project.hasProperty('${usernameProperty}') || System.getenv('${usernameProperty}') != null) && (project.hasProperty('${passwordProperty}') || System.getenv('${passwordProperty}') != null)) {
-    maven {
-        name = "$name"
-        url = uri("$url")
+    @Serializable
+    sealed interface CredentialsType {
+        @Serializable
+        object Nothing: CredentialsType {
+            override fun buildCheckPart(): String = "true"
+            override fun buildCredsPart(): String = ""
+        }
+        @Serializable
+        data class UsernameAndPassword(
+            val usernameProperty: String,
+            val passwordProperty: String
+        ): CredentialsType {
+            override fun buildCheckPart(): String = "(project.hasProperty('${usernameProperty}') || System.getenv('${usernameProperty}') != null) && (project.hasProperty('${passwordProperty}') || System.getenv('${passwordProperty}') != null)"
+            override fun buildCredsPart(): String {
+return """
         credentials {
             username = project.hasProperty('${usernameProperty}') ? project.property('${usernameProperty}') : System.getenv('${usernameProperty}')
             password = project.hasProperty('${passwordProperty}') ? project.property('${passwordProperty}') : System.getenv('${passwordProperty}')
         }
+"""
+            }
+        }
+        @Serializable
+        data class HttpHeaderCredentials(
+            val headerName: String,
+            val headerValueProperty: String
+        ): CredentialsType {
+            override fun buildCheckPart(): String = "project.hasProperty('${headerValueProperty}') || System.getenv('${headerValueProperty}') != null"
+            override fun buildCredsPart(): String {
+return """
+        credentials(HttpHeaderCredentials) {
+            name = "$headerName"
+            value = project.hasProperty('${headerValueProperty}') ? project.property('${headerValueProperty}') : System.getenv('${headerValueProperty}')
+        }
+"""
+            }
+        }
+
+        fun buildCheckPart(): String
+        fun buildCredsPart(): String
+    }
+    private val nameCapitalized by lazy {
+        name.uppercase()
+    }
+
+    fun build(indent: String): String {
+        return """if (${credsType.buildCheckPart()}) {
+    maven {
+        name = "$name"
+        url = uri("$url")
+${credsType.buildCredsPart()}
     }
 }""".replace("\n", "\n$indent")
     }
