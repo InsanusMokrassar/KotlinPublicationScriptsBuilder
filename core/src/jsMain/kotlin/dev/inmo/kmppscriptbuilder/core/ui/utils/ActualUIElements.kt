@@ -9,6 +9,7 @@ import dev.inmo.jsuikit.elements.Icon
 import dev.inmo.jsuikit.elements.Label
 import dev.inmo.jsuikit.elements.drawAsFormInputPart
 import dev.inmo.jsuikit.modifiers.UIKitButton
+import dev.inmo.jsuikit.modifiers.UIKitCustom
 import dev.inmo.jsuikit.modifiers.UIKitFlex
 import dev.inmo.jsuikit.modifiers.UIKitForm
 import dev.inmo.jsuikit.modifiers.UIKitInverse
@@ -18,6 +19,8 @@ import dev.inmo.jsuikit.modifiers.UIKitUtility
 import dev.inmo.jsuikit.modifiers.builder
 import dev.inmo.jsuikit.modifiers.include
 import dev.inmo.jsuikit.utils.Attrs
+import kotlinx.browser.window
+import kotlinx.coroutines.withTimeout
 import org.jetbrains.compose.web.attributes.InputType
 import org.jetbrains.compose.web.dom.Div
 import org.jetbrains.compose.web.dom.Legend
@@ -59,7 +62,12 @@ actual fun CommonTextField(
         placeholder = hint,
         attributesCustomizer = {
             onFocusIn { onFocusChanged(true) }
-            onFocusOut { onFocusChanged(false) }
+            onFocusOut {
+                window.setTimeout( // avoid immediate hiding of potential interface data with additional delay
+                    { onFocusChanged(false) },
+                    100
+                )
+            }
         },
         onChange = onChange
     )
@@ -84,7 +92,7 @@ actual fun SwitchWithLabel(
             onCheckedChange(!checked)
         },
         attributesCustomizer = {
-            include(UIKitUtility.Inline)
+            include(UIKitUtility.Inline, UIKitUtility.NoTransform, UIKitUtility.Border.Rounded)
         }
     ) {
         if (checked) {
@@ -95,8 +103,13 @@ actual fun SwitchWithLabel(
 }
 
 @Composable
-actual fun <T> ButtonsPanel(data: Iterable<T>, itemDrawer: @Composable (T) -> Unit) {
+actual fun <T> ButtonsPanel(
+    title: String,
+    data: Iterable<T>,
+    itemDrawer: @Composable (T) -> Unit
+) {
     Flex(UIKitFlex.Alignment.Vertical.Middle, UIKitMargin.Small) {
+        Div(UIKitMargin.Small.Horizontal.builder()) { Text(title) }
         data.forEach { itemDrawer(it) }
     }
 }

@@ -20,6 +20,7 @@ class ProjectTypeView : VerticalView("Project type") {
 
     override val content: @Composable () -> Unit = {
         ButtonsPanel(
+            "Project type",
             MultiplatformProjectType,
             JVMProjectType,
             JSProjectType

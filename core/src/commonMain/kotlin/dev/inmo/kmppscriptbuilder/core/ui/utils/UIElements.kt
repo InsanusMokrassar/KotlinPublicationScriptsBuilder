@@ -27,15 +27,17 @@ expect fun SwitchWithLabel(
 
 @Composable
 expect fun <T> ButtonsPanel(
+    title: String,
     data: Iterable<T>,
     itemDrawer: @Composable (T) -> Unit
 )
 
 @Composable
 fun <T> ButtonsPanel(
+    title: String,
     vararg data: T,
     itemDrawer: @Composable (T) -> Unit
-) = ButtonsPanel(data.toList(), itemDrawer)
+) = ButtonsPanel(title, data.toList(), itemDrawer)
 
 @Composable
 expect fun DefaultDivider()

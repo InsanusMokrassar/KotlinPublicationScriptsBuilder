@@ -74,6 +74,7 @@ class MavenInfoView : VerticalView("Project information") {
         ) { projectVcsUrlProperty = it }
 
         ButtonsPanel(
+            "Gpg signing",
             GpgSigning.Disabled,
             GpgSigning.Optional,
             GpgSigning.Enabled

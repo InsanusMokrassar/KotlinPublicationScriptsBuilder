@@ -5,10 +5,12 @@ import dev.inmo.jsuikit.elements.DefaultButton
 import dev.inmo.jsuikit.elements.Divider
 import dev.inmo.jsuikit.modifiers.UIKitButton
 import dev.inmo.jsuikit.modifiers.UIKitMargin
+import dev.inmo.jsuikit.modifiers.UIKitUtility
 import dev.inmo.jsuikit.modifiers.builder
 import dev.inmo.jsuikit.utils.Attrs
 import dev.inmo.kmppscriptbuilder.core.ui.utils.CommonTextField
 import dev.inmo.kmppscriptbuilder.core.ui.utils.Drawer
+import dev.inmo.kmppscriptbuilder.core.ui.utils.NoTransform
 import org.jetbrains.compose.web.dom.Div
 
 actual object LicensesDrawer : Drawer<LicensesView> {
@@ -32,7 +34,7 @@ actual object LicensesDrawer : Drawer<LicensesView> {
             Divider.Common()
         }
 
-        DefaultButton("Add empty license", UIKitButton.Type.Primary, UIKitMargin.Small) {
+        DefaultButton("Add empty license", UIKitButton.Type.Primary, UIKitMargin.Small, UIKitUtility.NoTransform, UIKitUtility.Border.Rounded) {
             licensesListState.add(LicenseState())
         }
 
@@ -50,7 +52,7 @@ actual object LicensesDrawer : Drawer<LicensesView> {
                     license.url ?: "",
                     "License URL",
                 ) { license.url = it }
-                DefaultButton("Remove", UIKitButton.Type.Danger, UIKitMargin.Small) {
+                DefaultButton("Remove", UIKitButton.Type.Default, UIKitMargin.Small, UIKitUtility.NoTransform, UIKitUtility.Border.Rounded) {
                     licensesListState.remove(license)
                 }
             }
