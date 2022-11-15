@@ -1,4 +1,4 @@
-package dev.inmo.kmppscriptbuilder.desktop.utils
+package dev.inmo.kmppscriptbuilder.core.ui.utils
 
 import java.io.File
 import javax.swing.filechooser.FileFilter

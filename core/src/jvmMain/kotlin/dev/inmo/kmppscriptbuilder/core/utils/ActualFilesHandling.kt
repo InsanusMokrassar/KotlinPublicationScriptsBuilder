@@ -1,8 +1,9 @@
-package dev.inmo.kmppscriptbuilder.desktop.utils
+package dev.inmo.kmppscriptbuilder.core.utils
 
 import dev.inmo.kmppscriptbuilder.core.models.Config
 import dev.inmo.kmppscriptbuilder.core.ui.utils.FileFilter
 import dev.inmo.kmppscriptbuilder.core.utils.serialFormat
+import dev.inmo.micro_utils.common.MPPFile
 import java.io.File
 import javax.swing.JFileChooser
 
@@ -15,7 +16,9 @@ fun loadConfigFile(file: File): Config {
     return serialFormat.decodeFromString(Config.serializer(), file.readText())
 }
 
-fun loadConfig(): Config? {
+actual fun MPPFile.text() = readText()
+
+actual fun loadConfig(): Config? {
     val fc = JFileChooser(lastFile ?.parent)
     fc.addChoosableFileFilter(FileFilter("Kotlin Publication Scripts Builder", Regex(".*\\.$appExtension")))
     fc.addChoosableFileFilter(FileFilter("JSON", Regex(".*\\.json")))
@@ -29,13 +32,13 @@ fun loadConfig(): Config? {
     }
 }
 
-fun saveConfig(config: Config): Boolean {
+actual fun saveConfig(config: Config): Boolean {
     return lastFile ?.also {
         it.writeText(serialFormat.encodeToString(Config.serializer(), config))
     } != null
 }
 
-fun exportGradle(config: Config): Boolean {
+actual fun exportGradle(config: Config): Boolean {
     val fc = JFileChooser(lastFile ?.parent)
     fc.fileSelectionMode = JFileChooser.DIRECTORIES_ONLY
     return when (fc.showSaveDialog(null)) {
@@ -56,7 +59,7 @@ fun exportGradle(config: Config): Boolean {
     }
 }
 
-fun saveAs(config: Config): Boolean {
+actual fun saveAs(config: Config): Boolean {
     val fc = JFileChooser(lastFile ?.parent)
     fc.addChoosableFileFilter(FileFilter("Kotlin Publication Scripts Builder", Regex(".*\\.$appExtension")))
     fc.addChoosableFileFilter(FileFilter("JSON", Regex(".*\\.json")))

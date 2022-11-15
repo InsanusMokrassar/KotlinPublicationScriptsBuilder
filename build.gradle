@@ -7,10 +7,10 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.2.2'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlin_version"
-        classpath "org.jetbrains.dokka:dokka-gradle-plugin:$dokka_version"
+        classpath libs.buildscript.kt.gradle
+        classpath libs.buildscript.kt.serialization
+        classpath libs.buildscript.jb.dokka
+        classpath libs.buildscript.gh.release
     }
 }
 
