@@ -7,6 +7,9 @@ plugins {
 apply from: "$mppProjectWithSerializationPresetPath"
 
 kotlin {
+    js (IR) {
+        binaries.executable()
+    }
     sourceSets {
         commonMain {
             dependencies {
@@ -17,10 +20,27 @@ kotlin {
                 api(compose.runtime)
             }
         }
+        jsMain {
+            dependencies {
+                implementation(compose.web.core)
+                api libs.ktor.client.js
+                api libs.jsuikit
+            }
+        }
         jvmMain {
             dependencies {
                 implementation(compose.desktop.currentOs)
+                api libs.ktor.client.cio
             }
+        }
+    }
+}
+
+
+compose {
+    desktop {
+        application {
+            mainClass = "dev.inmo.kmppscriptbuilder.desktop.BuilderKt"
         }
     }
 }

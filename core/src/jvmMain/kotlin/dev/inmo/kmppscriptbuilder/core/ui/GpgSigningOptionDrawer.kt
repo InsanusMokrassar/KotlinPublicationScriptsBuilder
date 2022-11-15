@@ -9,25 +9,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import dev.inmo.kmppscriptbuilder.core.models.JSProjectType
-import dev.inmo.kmppscriptbuilder.core.models.JVMProjectType
-import dev.inmo.kmppscriptbuilder.core.models.MultiplatformProjectType
-import dev.inmo.kmppscriptbuilder.core.models.ProjectType
+import dev.inmo.kmppscriptbuilder.core.models.GpgSigning
+import dev.inmo.kmppscriptbuilder.core.ui.utils.CommonTextField
 import dev.inmo.kmppscriptbuilder.core.ui.utils.Drawer
+import dev.inmo.kmppscriptbuilder.core.ui.utils.SwitchWithLabel
 
-actual class ProjectTypeDrawer(
-    private val projectTypeView: ProjectTypeView
-) : Drawer<ProjectType> {
+actual class GpgSigningOptionDrawer(
+    private val mavenInfoView: MavenInfoView
+) : Drawer<GpgSigning> {
     @Composable
-    override fun ProjectType.draw() {
-        if (projectTypeView.projectType == this) {
+    override fun GpgSigning.draw() {
+        if (mavenInfoView.gpgSignProperty == this) {
             Button({}, Modifier.padding(8.dp)) {
                 Text(name)
             }
         } else {
             OutlinedButton(
                 {
-                    projectTypeView.projectType = this
+                    mavenInfoView.gpgSignProperty = this
                 },
                 Modifier.padding(8.dp)
             ) {
@@ -37,4 +36,4 @@ actual class ProjectTypeDrawer(
     }
 }
 
-actual fun ProjectTypeDrawerWithView(view: ProjectTypeView): ProjectTypeDrawer = ProjectTypeDrawer(projectTypeView = view)
+actual fun GpgSigningOptionDrawerWithView(view: MavenInfoView): GpgSigningOptionDrawer = GpgSigningOptionDrawer(mavenInfoView = view)

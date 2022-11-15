@@ -1,12 +1,15 @@
 package dev.inmo.kmppscriptbuilder.core.ui
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import dev.inmo.kmppscriptbuilder.core.models.License
 import dev.inmo.kmppscriptbuilder.core.models.getLicenses
+import dev.inmo.kmppscriptbuilder.core.ui.utils.CommonTextField
 import dev.inmo.kmppscriptbuilder.core.ui.utils.Drawer
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.CoroutineScope
@@ -38,8 +41,14 @@ class LicensesView: VerticalView("Licenses") {
             licensesListState.addAll(value.map { it.toLicenseState() })
         }
     internal val availableLicensesState = mutableStateListOf<License>()
-    internal val licensesOffersToShow = mutableStateListOf<License>()
     internal var licenseSearchFilter by mutableStateOf("")
+    internal val searchFieldFocused = mutableStateOf(false)
+    internal val licensesOffersToShow = derivedStateOf {
+        val query = licenseSearchFilter.lowercase()
+        availableLicensesState.filter {
+            it.title.lowercase().contains(query)
+        }
+    }
 
     init {
         CoroutineScope(Dispatchers.Default).launch {
@@ -50,6 +59,16 @@ class LicensesView: VerticalView("Licenses") {
     }
 
     override val content: @Composable () -> Unit = {
+        CommonTextField(
+            licenseSearchFilter,
+            "Search filter",
+            onFocusChanged = {
+                searchFieldFocused.value = it
+            }
+        ) { filterText ->
+            licenseSearchFilter = filterText
+        }
+
         with(LicensesDrawer) { draw() }
     }
 }

@@ -2,9 +2,11 @@ package dev.inmo.kmppscriptbuilder.core.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import dev.inmo.kmppscriptbuilder.core.models.MavenPublishingRepository
+import dev.inmo.kmppscriptbuilder.core.ui.utils.CommonTextField
 import dev.inmo.kmppscriptbuilder.core.ui.utils.Drawer
 
 class RepositoryState(
@@ -18,8 +20,6 @@ class RepositoryState(
 }
 
 private fun MavenPublishingRepository.toRepositoryState() = RepositoryState(name, url)
-
-expect object RepositoryStateDrawer : Drawer<RepositoryState>
 
 class RepositoriesView : ListView<RepositoryState>("Repositories info") {
     var repositories: List<MavenPublishingRepository>
@@ -38,7 +38,14 @@ class RepositoriesView : ListView<RepositoryState>("Repositories info") {
 
     @Composable
     override fun buildView(item: RepositoryState) {
-        with(RepositoryStateDrawer) { with(item) { draw() } }
+        CommonTextField(
+            item.name,
+            "Repository name",
+        ) { item.name = it }
+        CommonTextField(
+            item.url,
+            "Repository url",
+        ) { item.url = it }
     }
 
 }

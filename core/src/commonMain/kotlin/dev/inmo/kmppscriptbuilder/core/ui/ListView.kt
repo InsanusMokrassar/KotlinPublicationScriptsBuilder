@@ -18,7 +18,7 @@ abstract class ListView<T>(title: String) : VerticalView(title) {
 
     protected val drawer = ListViewDrawer<T>()
 
-    override val content: () -> Unit = {
+    override val content: @Composable () -> Unit = {
         with(drawer) {
             draw()
         }

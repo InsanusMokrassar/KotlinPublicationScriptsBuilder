@@ -6,12 +6,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Divider
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Switch
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -29,15 +31,15 @@ actual fun SwitchWithLabel(
     switchEnabled: Boolean,
     onCheckedChange: (Boolean) -> Unit
 ) {
-    Row(Modifier.padding(0.dp, 8.dp), Arrangement.Start, Alignment.Top) {
+    Row(Modifier.padding(0.dp, 8.dp).clickable { onCheckedChange(!checked) }, Arrangement.Start, Alignment.Top) {
         val switchCreator = @Composable {
-            Switch(checked, onCheckedChange, Modifier.padding(8.dp, 0.dp), enabled = switchEnabled)
+            Switch(checked, null, Modifier.padding(8.dp, 0.dp), enabled = switchEnabled)
         }
         if (placeSwitchAtTheStart) {
             switchCreator()
         }
-        Box(Modifier.fillMaxWidth().align(Alignment.CenterVertically).clickable {  }) {
-            CommonText(label,)
+        Box(Modifier.fillMaxWidth().align(Alignment.CenterVertically)) {
+            CommonText(label)
         }
         if (!placeSwitchAtTheStart) {
             switchCreator()
@@ -46,11 +48,18 @@ actual fun SwitchWithLabel(
 }
 
 @Composable
-actual fun CommonTextField(presetText: String, hint: String, onChange: (String) -> Unit) {
+actual fun CommonTextField(
+    presetText: String,
+    hint: String,
+    onFocusChanged: (Boolean) -> Unit,
+    onChange: (String) -> Unit
+) {
     OutlinedTextField(
         presetText,
         onChange,
-        Modifier.fillMaxWidth(),
+        Modifier.fillMaxWidth().onFocusChanged {
+            onFocusChanged(it.isFocused)
+        },
         singleLine = true,
         label = {
             CommonText(hint,)
@@ -68,4 +77,16 @@ actual fun TitleText(text: String) {
     Text(
         text, Modifier.padding(0.dp, 8.dp), fontSize = 18.sp
     )
+}
+
+@Composable
+actual fun <T> ButtonsPanel(data: Iterable<T>, itemDrawer: @Composable (T) -> Unit) {
+    Row {
+        data.forEach { itemDrawer(it) }
+    }
+}
+
+@Composable
+actual fun DefaultDivider() {
+    Divider()
 }

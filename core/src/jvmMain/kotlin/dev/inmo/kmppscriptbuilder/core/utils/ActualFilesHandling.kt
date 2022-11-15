@@ -2,33 +2,29 @@ package dev.inmo.kmppscriptbuilder.core.utils
 
 import dev.inmo.kmppscriptbuilder.core.models.Config
 import dev.inmo.kmppscriptbuilder.core.ui.utils.FileFilter
-import dev.inmo.kmppscriptbuilder.core.utils.serialFormat
 import dev.inmo.micro_utils.common.MPPFile
 import java.io.File
 import javax.swing.JFileChooser
 
-private const val appExtension = "kpsb"
+fun MPPFile.text() = readText()
 
-private var lastFile: File? = null
+internal var lastFile: MPPFile? = null
 
-fun loadConfigFile(file: File): Config {
+fun loadConfigFile(file: MPPFile): Config {
     lastFile = file
-    return serialFormat.decodeFromString(Config.serializer(), file.readText())
+    return serialFormat.decodeFromString(Config.serializer(), file.text())
 }
 
-actual fun MPPFile.text() = readText()
-
-actual fun loadConfig(): Config? {
+actual fun openNewConfig(onParsed: (Config) -> Unit) {
     val fc = JFileChooser(lastFile ?.parent)
     fc.addChoosableFileFilter(FileFilter("Kotlin Publication Scripts Builder", Regex(".*\\.$appExtension")))
     fc.addChoosableFileFilter(FileFilter("JSON", Regex(".*\\.json")))
-    return when (fc.showOpenDialog(null)) {
+    when (fc.showOpenDialog(null)) {
         JFileChooser.APPROVE_OPTION -> {
             val file = fc.selectedFile
             lastFile = file
-            return serialFormat.decodeFromString(Config.serializer(), fc.selectedFile.readText())
+            onParsed(serialFormat.decodeFromString(Config.serializer(), fc.selectedFile.readText()))
         }
-        else -> null
     }
 }
 

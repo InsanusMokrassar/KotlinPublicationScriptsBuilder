@@ -5,18 +5,26 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import dev.inmo.kmppscriptbuilder.core.models.Config
-import dev.inmo.kmppscriptbuilder.core.ui.utils.Drawer
+import dev.inmo.kmppscriptbuilder.core.ui.utils.DefaultDivider
 
-expect object BuilderViewDrawer : Drawer<BuilderView>
+@Composable
+expect fun TopAppBar(
+    config: Config,
+    saveAvailable: Boolean,
+    onSaveAvailable: (Boolean) -> Unit,
+    onNewConfig: (Config) -> Unit
+)
 
 class BuilderView : View() {
-    internal val projectTypeView = ProjectTypeView()
-    internal val mavenInfoView = MavenInfoView()
-    internal val licensesView = LicensesView()
+    internal val projectTypeView by mutableStateOf(ProjectTypeView())
+    internal val mavenInfoView by mutableStateOf(MavenInfoView())
+    internal val licensesView by mutableStateOf(LicensesView())
 
     internal var saveAvailableState by mutableStateOf(false)
     var config: Config
-        get() = Config(licensesView.licenses, mavenInfoView.mavenConfig, projectTypeView.projectType)
+        get() {
+            return Config(licensesView.licenses, mavenInfoView.mavenConfig, projectTypeView.projectType)
+        }
         set(value) {
             licensesView.licenses = value.licenses
             mavenInfoView.mavenConfig = value.mavenConfig
@@ -26,6 +34,20 @@ class BuilderView : View() {
 
     @Composable
     override fun build() {
-        with(BuilderViewDrawer) { draw() }
+        TopAppBar(
+            config,
+            saveAvailableState,
+            {
+                saveAvailableState = it
+            }
+        ) {
+            config = it
+        }
+
+        projectTypeView.build()
+        DefaultDivider()
+        licensesView.build()
+        DefaultDivider()
+        mavenInfoView.build()
     }
 }
