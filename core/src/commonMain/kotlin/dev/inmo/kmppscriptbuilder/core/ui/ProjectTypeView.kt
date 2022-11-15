@@ -1,40 +1,19 @@
 package dev.inmo.kmppscriptbuilder.core.ui
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import dev.inmo.kmppscriptbuilder.core.models.*
-import dev.inmo.kmppscriptbuilder.desktop.utils.VerticalView
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import dev.inmo.kmppscriptbuilder.core.models.MultiplatformProjectType
+import dev.inmo.kmppscriptbuilder.core.models.ProjectType
+import dev.inmo.kmppscriptbuilder.core.ui.utils.Drawer
+
+expect object ProjectTypeDrawer : Drawer<ProjectTypeView>
 
 class ProjectTypeView : VerticalView("Project type") {
     var projectType by mutableStateOf<ProjectType>(MultiplatformProjectType)
 
-    @Composable
-    private fun addProjectTypeButton(newProjectType: ProjectType) {
-        if (projectType == newProjectType) {
-            Button({}, Modifier.padding(8.dp)) {
-                Text(newProjectType.name)
-            }
-        } else {
-            OutlinedButton(
-                {
-                    projectType = newProjectType
-                },
-                Modifier.padding(8.dp)
-            ) {
-                Text(newProjectType.name)
-            }
-        }
-    }
-
-    override val content: @Composable ColumnScope.() -> Unit = {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            addProjectTypeButton(MultiplatformProjectType)
-            addProjectTypeButton(JVMProjectType)
-            addProjectTypeButton(JSProjectType)
-        }
+    override val content: @Composable () -> Unit = {
+        with(ProjectTypeDrawer) { draw() }
     }
 }

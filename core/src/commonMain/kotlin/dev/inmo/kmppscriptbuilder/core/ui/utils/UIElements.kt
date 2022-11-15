@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 expect fun TitleText(text: String)
 
 @Composable
-expect fun CommonText(text: String)
+expect fun CommonText(text: String, onClick: (() -> Unit)? = null)
 
 @Composable
 expect fun CommonTextField(presetText: String, hint: String, onChange: (String) -> Unit)

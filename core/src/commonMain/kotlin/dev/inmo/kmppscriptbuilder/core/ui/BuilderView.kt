@@ -1,6 +1,9 @@
 package dev.inmo.kmppscriptbuilder.core.ui
 
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import dev.inmo.kmppscriptbuilder.core.models.Config
 import dev.inmo.kmppscriptbuilder.core.ui.utils.Drawer
 

@@ -37,7 +37,7 @@ actual fun SwitchWithLabel(
             switchCreator()
         }
         Box(Modifier.fillMaxWidth().align(Alignment.CenterVertically).clickable {  }) {
-            CommonText(label)
+            CommonText(label,)
         }
         if (!placeSwitchAtTheStart) {
             switchCreator()
@@ -53,14 +53,14 @@ actual fun CommonTextField(presetText: String, hint: String, onChange: (String) 
         Modifier.fillMaxWidth(),
         singleLine = true,
         label = {
-            CommonText(hint)
+            CommonText(hint,)
         }
     )
 }
 
 @Composable
-actual fun CommonText(text: String) {
-    Text(text)
+actual fun CommonText(text: String, onClick: (() -> Unit)?) {
+    Text(text, modifier = Modifier.run { onClick ?.let { clickable(onClick = it) } ?: this })
 }
 
 @Composable

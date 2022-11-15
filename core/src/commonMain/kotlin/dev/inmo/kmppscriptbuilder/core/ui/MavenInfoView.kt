@@ -1,24 +1,20 @@
 package dev.inmo.kmppscriptbuilder.core.ui
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.VerticalAlignmentLine
-import androidx.compose.ui.unit.dp
-import dev.inmo.kmppscriptbuilder.core.models.*
-import dev.inmo.kmppscriptbuilder.desktop.utils.*
+import dev.inmo.kmppscriptbuilder.core.models.GpgSigning
+import dev.inmo.kmppscriptbuilder.core.ui.utils.Drawer
+
+expect object MavenInfoDrawer : Drawer<MavenInfoView>
 
 class MavenInfoView : VerticalView("Project information") {
-    private var projectNameProperty by mutableStateOf("")
-    private var projectDescriptionProperty by mutableStateOf("")
-    private var projectUrlProperty by mutableStateOf("")
-    private var projectVcsUrlProperty by mutableStateOf("")
-    private var gpgSignProperty by mutableStateOf<GpgSigning>(GpgSigning.Disabled)
-    private var publishToMavenCentralProperty by mutableStateOf(false)
-    private val developersView = DevelopersView()
-    private val repositoriesView = RepositoriesView()
+    internal var projectNameProperty by mutableStateOf("")
+    internal var projectDescriptionProperty by mutableStateOf("")
+    internal var projectUrlProperty by mutableStateOf("")
+    internal var projectVcsUrlProperty by mutableStateOf("")
+    internal var gpgSignProperty by mutableStateOf<GpgSigning>(GpgSigning.Disabled)
+    internal var publishToMavenCentralProperty by mutableStateOf(false)
+    internal val developersView = DevelopersView()
+    internal val repositoriesView = RepositoriesView()
 
     var mavenConfig: MavenConfig
         get() = MavenConfig(
@@ -50,55 +46,7 @@ class MavenInfoView : VerticalView("Project information") {
 //            developersView.developers = value.developers
         }
 
-    @Composable
-    private fun addGpgSigningButton(gpgSigning: GpgSigning) {
-        if (gpgSignProperty == gpgSigning) {
-            Button({}, Modifier.padding(8.dp)) {
-                Text(gpgSigning.name)
-            }
-        } else {
-            OutlinedButton(
-                {
-                    gpgSignProperty = gpgSigning
-                },
-                Modifier.padding(8.dp)
-            ) {
-                Text(gpgSigning.name)
-            }
-        }
-    }
-
-    override val content: @Composable ColumnScope.() -> Unit = {
-        CommonTextField(
-            projectNameProperty,
-            "Public project name"
-        ) { projectNameProperty = it }
-        CommonTextField(
-            projectDescriptionProperty,
-            "Public project description"
-        ) { projectDescriptionProperty = it }
-        CommonTextField(
-            projectUrlProperty,
-            "Public project URL"
-        ) { projectUrlProperty = it }
-        CommonTextField(
-            projectVcsUrlProperty,
-            "Public project VCS URL (with .git)"
-        ) { projectVcsUrlProperty = it }
-
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Text("Gpg Signing: ")
-            addGpgSigningButton(GpgSigning.Disabled)
-            addGpgSigningButton(GpgSigning.Optional)
-            addGpgSigningButton(GpgSigning.Enabled)
-        }
-
-        SwitchWithLabel(
-            "Include publication to MavenCentral",
-            publishToMavenCentralProperty,
-            placeSwitchAtTheStart = true
-        ) { publishToMavenCentralProperty = it }
-        developersView.init()
-        repositoriesView.init()
+    override val content: @Composable () -> Unit = {
+        with (MavenInfoDrawer) { draw() }
     }
 }

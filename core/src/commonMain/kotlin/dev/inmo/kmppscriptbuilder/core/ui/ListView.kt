@@ -6,7 +6,7 @@ import dev.inmo.kmppscriptbuilder.core.ui.utils.Drawer
 
 expect class ListViewDrawer<T>() : Drawer<ListView<T>>
 
-abstract class ListView<T>(protected val title: String) : View() {
+abstract class ListView<T>(title: String) : VerticalView(title) {
     internal val itemsList = mutableStateListOf<T>()
 
     internal open val addItemText: String = "Add"
@@ -18,9 +18,9 @@ abstract class ListView<T>(protected val title: String) : View() {
 
     protected val drawer = ListViewDrawer<T>()
 
-    override fun build() {
-        DrawVertically(title) {
-            with(drawer) { draw() }
+    override val content: () -> Unit = {
+        with(drawer) {
+            draw()
         }
     }
 }

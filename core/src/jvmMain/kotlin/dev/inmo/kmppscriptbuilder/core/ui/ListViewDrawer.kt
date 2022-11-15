@@ -11,13 +11,13 @@ import dev.inmo.kmppscriptbuilder.core.ui.utils.Drawer
 actual class ListViewDrawer<T> : Drawer<ListView<T>> {
     override fun ListView<T>.draw() {
         Button({ itemsList.add(createItem()) }) {
-            CommonText(addItemText)
+            CommonText(addItemText,)
         }
         itemsList.forEach { item ->
             Column(Modifier.padding(8.dp)) {
                 buildView(item)
                 Button({ itemsList.remove(item) }, Modifier.padding(8.dp)) {
-                    CommonText(removeItemText)
+                    CommonText(removeItemText,)
                 }
             }
         }

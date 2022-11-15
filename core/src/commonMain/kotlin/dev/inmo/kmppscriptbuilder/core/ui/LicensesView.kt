@@ -1,12 +1,19 @@
 package dev.inmo.kmppscriptbuilder.core.ui
 
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import dev.inmo.kmppscriptbuilder.core.models.License
 import dev.inmo.kmppscriptbuilder.core.models.getLicenses
+import dev.inmo.kmppscriptbuilder.core.ui.utils.Drawer
 import io.ktor.client.HttpClient
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-private class LicenseState(
+internal class LicenseState(
     id: String = "",
     title: String = "",
     url: String? = null
@@ -18,19 +25,21 @@ private class LicenseState(
     fun toLicense() = License(id, title, url)
 }
 
-private fun License.toLicenseState() = LicenseState(id, title, url)
+internal fun License.toLicenseState() = LicenseState(id, title, url)
+
+expect object LicensesDrawer : Drawer<LicensesView>
 
 class LicensesView: VerticalView("Licenses") {
-    private var licensesListState = mutableStateListOf<LicenseState>()
+    internal var licensesListState = mutableStateListOf<LicenseState>()
     var licenses: List<License>
         get() = licensesListState.map { it.toLicense() }
         set(value) {
             licensesListState.clear()
             licensesListState.addAll(value.map { it.toLicenseState() })
         }
-    private val availableLicensesState = mutableStateListOf<License>()
-    private val licensesOffersToShow = mutableStateListOf<License>()
-    private var licenseSearchFilter by mutableStateOf("")
+    internal val availableLicensesState = mutableStateListOf<License>()
+    internal val licensesOffersToShow = mutableStateListOf<License>()
+    internal var licenseSearchFilter by mutableStateOf("")
 
     init {
         CoroutineScope(Dispatchers.Default).launch {
@@ -40,49 +49,7 @@ class LicensesView: VerticalView("Licenses") {
         }
     }
 
-    override val content: @Composable ColumnScope.() -> Unit = {
-        CommonTextField(licenseSearchFilter, "Search filter") { filterText ->
-            licenseSearchFilter = filterText
-            licensesOffersToShow.clear()
-            if (licenseSearchFilter.isNotEmpty()) {
-                licensesOffersToShow.addAll(
-                    availableLicensesState.filter { filterText.all { symbol -> symbol.lowercaseChar() in it.title } }
-                )
-            }
-        }
-        Column {
-            licensesOffersToShow.forEach {
-                Column(Modifier.padding(16.dp, 8.dp, 8.dp, 8.dp)) {
-                    CommonText(it.title, Modifier.clickable {
-                        licensesListState.add(it.toLicenseState())
-                        licenseSearchFilter = ""
-                        licensesOffersToShow.clear()
-                    })
-                    Divider()
-                }
-            }
-        }
-        Button({ licensesListState.add(LicenseState()) }, Modifier.padding(8.dp)) {
-            CommonText("Add empty license")
-        }
-        licensesListState.forEach { license ->
-            Column(Modifier.padding(8.dp)) {
-                CommonTextField(
-                    license.id,
-                    "License ID"
-                ) { license.id = it }
-                CommonTextField(
-                    license.title,
-                    "License title"
-                ) { license.title = it }
-                CommonTextField(
-                    license.url ?: "",
-                    "License URL"
-                ) { license.url = it }
-                Button({ licensesListState.remove(license) }, Modifier.padding(8.dp)) {
-                    CommonText("Remove")
-                }
-            }
-        }
+    override val content: @Composable () -> Unit = {
+        with(LicensesDrawer) { draw() }
     }
 }
