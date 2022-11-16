@@ -38,12 +38,12 @@ jobs:
           draft: false
           prerelease: true
       - name: Upload Ubuntu Release Asset
-        id: upload-ubuntu-release-asset 
+        id: upload-ubuntu-release-asset
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: "./desktop/build/compose/jars/kmppscriptbuilder.desktop-linux-x64-${{ env.version }}${{ env.additional_version }}.jar"
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+          asset_path: "./core/build/compose/jars/kmppscriptbuilder.desktop-linux-x64-${{ env.version }}${{ env.additional_version }}.jar"
           asset_name: KotlinPublicationScriptsBuilder-linux-x64.jar
           asset_content_type: application/java-archive

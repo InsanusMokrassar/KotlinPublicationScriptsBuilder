@@ -4,15 +4,10 @@ project.group = "$group"
 // apply from: "$publishGradlePath"
 
 kotlin {
-    jvm {
-        compilations.main.kotlinOptions.useIR = true
-    }
+    jvm()
     js (IR) {
         browser()
         nodejs()
-    }
-    android {
-        publishAllLibraryVariants()
     }
 
     sourceSets {
@@ -39,14 +34,5 @@ kotlin {
                 implementation kotlin('test-junit')
             }
         }
-        androidTest {
-            dependencies {
-                implementation kotlin('test-junit')
-                implementation "androidx.test.ext:junit:$test_ext_junit_version"
-                implementation "androidx.test.espresso:espresso-core:$espresso_core"
-            }
-        }
     }
 }
-
-apply from: "$defaultAndroidSettingsPresetPath"

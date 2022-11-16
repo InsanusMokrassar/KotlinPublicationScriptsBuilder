@@ -9,8 +9,8 @@ rootProject.name = 'kmppscriptbuilder'
 
 String[] includes = [
         ":core",
-        ":desktop",
-        ":web"
+//        ":desktop",
+//        ":web"
 ]
 
 

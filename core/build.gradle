@@ -1,20 +1,46 @@
 plugins {
     id "org.jetbrains.kotlin.multiplatform"
     id "org.jetbrains.kotlin.plugin.serialization"
-    id "com.android.library"
+    alias(libs.plugins.jb.compose)
 }
 
 apply from: "$mppProjectWithSerializationPresetPath"
 
 kotlin {
+    js (IR) {
+        binaries.executable()
+    }
     sourceSets {
         commonMain {
             dependencies {
-                api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutines_version"
-                api "dev.inmo:micro_utils.coroutines:$micro_utils_version"
-
-                api "io.ktor:ktor-client-core:$ktor_version"
+                api libs.kt.coroutines
+                api libs.microutils.common
+                api libs.microutils.coroutines
+                api libs.ktor.client
+                api(compose.runtime)
             }
+        }
+        jsMain {
+            dependencies {
+                implementation(compose.web.core)
+                api libs.ktor.client.js
+                api libs.jsuikit
+            }
+        }
+        jvmMain {
+            dependencies {
+                implementation(compose.desktop.currentOs)
+                api libs.ktor.client.cio
+            }
+        }
+    }
+}
+
+
+compose {
+    desktop {
+        application {
+            mainClass = "dev.inmo.kmppscriptbuilder.desktop.BuilderKt"
         }
     }
 }

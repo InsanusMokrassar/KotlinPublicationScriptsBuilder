@@ -4,6 +4,7 @@ import dev.inmo.kmppscriptbuilder.core.utils.serialFormat
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.client.request.url
+import io.ktor.client.statement.bodyAsText
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.MapSerializer
 import kotlinx.serialization.builtins.serializer
@@ -20,9 +21,9 @@ private val commonLicensesListDeserializer = MapSerializer(String.serializer(), 
 private var licenses: Map<String, License>? = null
 
 suspend fun HttpClient.getLicenses(): Map<String, License> {
-    val answer = get<String> {
+    val answer = get {
         url("https://licenses.opendefinition.org/licenses/groups/all.json")
-    }
+    }.bodyAsText()
     return serialFormat.decodeFromString(commonLicensesListDeserializer, answer).also { gotLicenses ->
         licenses = gotLicenses
     }
