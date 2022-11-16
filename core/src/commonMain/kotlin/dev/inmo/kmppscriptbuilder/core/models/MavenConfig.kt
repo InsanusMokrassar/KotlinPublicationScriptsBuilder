@@ -86,6 +86,10 @@ return """
             name = "$headerName"
             value = project.hasProperty('${headerValueProperty}') ? project.property('${headerValueProperty}') : System.getenv('${headerValueProperty}')
         }
+
+        authentication {
+            header(HttpHeaderAuthentication)
+        }
 """
             }
 
