@@ -24,7 +24,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./web/build/distributions
+          publish_dir: ./core/build/distributions
           publish_branch: site
       - name: Create Release
         id: create_release
