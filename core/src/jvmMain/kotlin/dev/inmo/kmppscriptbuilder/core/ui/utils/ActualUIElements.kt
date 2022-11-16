@@ -106,7 +106,7 @@ actual fun DefaultSmallVerticalMargin() {
 }
 
 @Composable
-actual fun DefaultBox(block: @Composable () -> Unit) {
+actual fun DefaultContentColumn(block: @Composable () -> Unit) {
     Column(Modifier.padding(8.dp)) {
         block()
     }

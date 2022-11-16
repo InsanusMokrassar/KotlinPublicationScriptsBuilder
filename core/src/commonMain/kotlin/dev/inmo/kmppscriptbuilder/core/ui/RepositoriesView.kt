@@ -9,6 +9,7 @@ import dev.inmo.kmppscriptbuilder.core.models.MavenPublishingRepository
 import dev.inmo.kmppscriptbuilder.core.ui.utils.ButtonsPanel
 import dev.inmo.kmppscriptbuilder.core.ui.utils.CommonText
 import dev.inmo.kmppscriptbuilder.core.ui.utils.CommonTextField
+import dev.inmo.kmppscriptbuilder.core.ui.utils.DefaultContentColumn
 import dev.inmo.kmppscriptbuilder.core.ui.utils.DefaultSmallVerticalMargin
 import dev.inmo.kmppscriptbuilder.core.ui.utils.Drawer
 
@@ -21,10 +22,10 @@ class RepositoryState(
     var url: String by mutableStateOf(url)
     var credsType by mutableStateOf(credsType)
 
-    fun toRepository() = MavenPublishingRepository(name, url)
+    fun toRepository() = MavenPublishingRepository(name, url, credsType)
 }
 
-private fun MavenPublishingRepository.toRepositoryState() = RepositoryState(name, url)
+private fun MavenPublishingRepository.toRepositoryState() = RepositoryState(name, url, credsType)
 
 expect class RepositoryCredentialTypeDrawer : Drawer<MavenPublishingRepository.CredentialsType>
 expect fun RepositoryCredentialTypeDrawerWithState(repositoryState: RepositoryState): RepositoryCredentialTypeDrawer
@@ -54,7 +55,34 @@ class RepositoriesView : ListView<RepositoryState>("Repositories info") {
         CommonTextField(
             item.name,
             "This name will be used to identify repository in gradle"
-        ) { item.name = it }
+        ) {
+            val previous = item.name
+            item.name = it
+            when (val currentCredsType = item.credsType) {
+                is MavenPublishingRepository.CredentialsType.HttpHeaderCredentials -> {
+                    if (MavenPublishingRepository.CredentialsType.HttpHeaderCredentials.defaultValueProperty(previous) == currentCredsType.headerValueProperty) {
+                        item.credsType = currentCredsType.copy(
+                            headerValueProperty = MavenPublishingRepository.CredentialsType.HttpHeaderCredentials.defaultValueProperty(it)
+                        )
+                    }
+                }
+                MavenPublishingRepository.CredentialsType.Nothing -> {}
+                is MavenPublishingRepository.CredentialsType.UsernameAndPassword -> {
+                    var current: MavenPublishingRepository.CredentialsType.UsernameAndPassword = currentCredsType
+                    if (MavenPublishingRepository.CredentialsType.UsernameAndPassword.defaultUsernameProperty(previous) == currentCredsType.usernameProperty) {
+                        current = current.copy(
+                            usernameProperty = MavenPublishingRepository.CredentialsType.UsernameAndPassword.defaultUsernameProperty(it)
+                        )
+                    }
+                    if (MavenPublishingRepository.CredentialsType.UsernameAndPassword.defaultPasswordProperty(previous) == currentCredsType.passwordProperty) {
+                        current = current.copy(
+                            passwordProperty = MavenPublishingRepository.CredentialsType.UsernameAndPassword.defaultPasswordProperty(it)
+                        )
+                    }
+                    item.credsType = current
+                }
+            }
+        }
         DefaultSmallVerticalMargin()
         CommonText("Repository url")
         CommonTextField(
@@ -66,41 +94,46 @@ class RepositoriesView : ListView<RepositoryState>("Repositories info") {
             "Credentials type",
             MavenPublishingRepository.CredentialsType.Nothing.takeIf { item.credsType != it } ?: item.credsType,
             MavenPublishingRepository.CredentialsType.UsernameAndPassword(item.name).takeIf { item.credsType !is MavenPublishingRepository.CredentialsType.UsernameAndPassword } ?: item.credsType,
-            MavenPublishingRepository.CredentialsType.HttpHeaderCredentials("Authorization", "${item.name.uppercase()}_TOKEN").takeIf { item.credsType !is MavenPublishingRepository.CredentialsType.HttpHeaderCredentials } ?: item.credsType,
+            MavenPublishingRepository.CredentialsType.HttpHeaderCredentials(
+                "Authorization",
+                MavenPublishingRepository.CredentialsType.HttpHeaderCredentials.defaultValueProperty(item.name)
+            ).takeIf { item.credsType !is MavenPublishingRepository.CredentialsType.HttpHeaderCredentials } ?: item.credsType,
         ) {
             with(credsTypesDrawer) {
-                with(item.credsType) {
+                with(it) {
                     draw()
                 }
             }
         }
 
-        when (val credsType = item.credsType) {
-            is MavenPublishingRepository.CredentialsType.HttpHeaderCredentials -> {
-                CommonText("Header name")
-                CommonTextField(credsType.headerName) {
-                    item.credsType = credsType.copy(headerName = it)
-                }
-                DefaultSmallVerticalMargin()
+        DefaultContentColumn {
+            when (val credsType = item.credsType) {
+                is MavenPublishingRepository.CredentialsType.HttpHeaderCredentials -> {
+                    CommonText("Header name")
+                    CommonTextField(credsType.headerName) {
+                        item.credsType = credsType.copy(headerName = it)
+                    }
+                    DefaultSmallVerticalMargin()
 
-                CommonText("Property name")
-                CommonTextField(credsType.headerValueProperty) {
-                    item.credsType = credsType.copy(headerValueProperty = it)
+                    CommonText("Property name")
+                    CommonTextField(credsType.headerValueProperty) {
+                        item.credsType = credsType.copy(headerValueProperty = it)
+                    }
                 }
-            }
-            MavenPublishingRepository.CredentialsType.Nothing -> {
-                CommonText("No parameters for absence of credentials")
-            }
-            is MavenPublishingRepository.CredentialsType.UsernameAndPassword -> {
-                CommonText("Username property name")
-                CommonTextField(credsType.usernameProperty) {
-                    item.credsType = credsType.copy(usernameProperty = it)
+                MavenPublishingRepository.CredentialsType.Nothing -> {
+                    CommonText("No parameters for absence of credentials")
                 }
-                DefaultSmallVerticalMargin()
+                is MavenPublishingRepository.CredentialsType.UsernameAndPassword -> {
+                    CommonText("Username property name")
+                    CommonTextField(credsType.usernameProperty) {
+                        item.credsType = credsType.copy(usernameProperty = it)
+                    }
+                    DefaultSmallVerticalMargin()
 
-                CommonText("Password property name")
-                CommonTextField(credsType.passwordProperty) {
-                    item.credsType = credsType.copy(passwordProperty = it)
+                    CommonText("Password property name")
+                    CommonTextField(credsType.passwordProperty) {
+                        item.credsType = credsType.copy(passwordProperty = it)
+                    }
                 }
             }
         }

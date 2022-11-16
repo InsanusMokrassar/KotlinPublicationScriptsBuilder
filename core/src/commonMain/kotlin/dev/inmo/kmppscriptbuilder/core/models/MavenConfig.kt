@@ -33,13 +33,10 @@ data class MavenPublishingRepository(
     val name: String,
     val url: String,
     val credsType: CredentialsType = CredentialsType.UsernameAndPassword(
-        "${name.uppercase()}_USER",
-        "${name.uppercase()}_PASSWORD"
+        CredentialsType.UsernameAndPassword.defaultUsernameProperty(name),
+        CredentialsType.UsernameAndPassword.defaultPasswordProperty(name),
     )
 ) {
-    val defaultUsernameProperty = "${name.uppercase()}_USER"
-    val defaultPasswordProperty = "${name.uppercase()}_PASSWORD"
-    val defaultHeaderValueProperty = "${name.uppercase()}_TOKEN"
 
     @Serializable
     sealed interface CredentialsType {
@@ -54,8 +51,8 @@ data class MavenPublishingRepository(
             val passwordProperty: String
         ): CredentialsType {
             constructor(baseParameter: String) : this(
-                "${baseParameter.uppercase()}_USER",
-                "${baseParameter.uppercase()}_PASSWORD",
+                defaultUsernameProperty(baseParameter),
+                defaultPasswordProperty(baseParameter)
             )
 
             override fun buildCheckPart(): String = "(project.hasProperty('${usernameProperty}') || System.getenv('${usernameProperty}') != null) && (project.hasProperty('${passwordProperty}') || System.getenv('${passwordProperty}') != null)"
@@ -66,6 +63,15 @@ return """
             password = project.hasProperty('${passwordProperty}') ? project.property('${passwordProperty}') : System.getenv('${passwordProperty}')
         }
 """
+            }
+
+            companion object {
+                fun defaultUsernameProperty(name: String): String {
+                    return "${name.uppercase()}_USER"
+                }
+                fun defaultPasswordProperty(name: String): String {
+                    return "${name.uppercase()}_PASSWORD"
+                }
             }
         }
         @Serializable
@@ -81,6 +87,12 @@ return """
             value = project.hasProperty('${headerValueProperty}') ? project.property('${headerValueProperty}') : System.getenv('${headerValueProperty}')
         }
 """
+            }
+
+            companion object {
+                fun defaultValueProperty(name: String): String {
+                    return "${name.uppercase()}_TOKEN"
+                }
             }
         }
 

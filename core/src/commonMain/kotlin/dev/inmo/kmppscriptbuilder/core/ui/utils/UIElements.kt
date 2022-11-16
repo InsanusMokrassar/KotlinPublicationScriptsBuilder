@@ -46,4 +46,4 @@ expect fun DefaultDivider()
 expect fun DefaultSmallVerticalMargin()
 
 @Composable
-expect fun DefaultBox(block: @Composable () -> Unit)
+expect fun DefaultContentColumn(block: @Composable () -> Unit)

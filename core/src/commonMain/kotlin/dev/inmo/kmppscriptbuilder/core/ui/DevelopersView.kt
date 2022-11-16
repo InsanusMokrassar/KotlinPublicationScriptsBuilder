@@ -7,7 +7,6 @@ import androidx.compose.runtime.setValue
 import dev.inmo.kmppscriptbuilder.core.models.Developer
 import dev.inmo.kmppscriptbuilder.core.ui.utils.CommonText
 import dev.inmo.kmppscriptbuilder.core.ui.utils.CommonTextField
-import dev.inmo.kmppscriptbuilder.core.ui.utils.DefaultBox
 import dev.inmo.kmppscriptbuilder.core.ui.utils.DefaultSmallVerticalMargin
 
 class DeveloperState(

@@ -121,7 +121,7 @@ actual fun DefaultSmallVerticalMargin() {
 }
 
 @Composable
-actual fun DefaultBox(block: @Composable () -> Unit) {
+actual fun DefaultContentColumn(block: @Composable () -> Unit) {
     Div(attrsBuilder(UIKitMargin.Small.Horizontal, UIKitMargin.Small.Vertical)) {
         block()
     }
