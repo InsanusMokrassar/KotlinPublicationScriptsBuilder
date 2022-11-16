@@ -19,7 +19,7 @@ jobs:
       - name: Set version from gradle.properties
         run: echo "version=` cat gradle.properties | grep ^version= | grep -o [\\.0-9]* `" >> $GITHUB_ENV
       - name: Build
-        run: ./gradlew build packageUberJarForCurrentOS
+        run: ./gradlew build packageReleaseUberJarForCurrentOS
       - name: Publish Web
         uses: peaceiris/actions-gh-pages@v3
         with:
@@ -44,6 +44,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
-          asset_path: "./core/build/compose/jars/kmppscriptbuilder.core-linux-x64-${{ env.version }}${{ env.additional_version }}.jar"
+          asset_path: "./core/build/compose/jars/*.jar"
           asset_name: KotlinPublicationScriptsBuilder-linux-x64.jar
           asset_content_type: application/java-archive
