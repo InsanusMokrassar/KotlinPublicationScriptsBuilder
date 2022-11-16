@@ -3,7 +3,9 @@ package dev.inmo.kmppscriptbuilder.core.ui.utils
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Divider
@@ -50,7 +52,7 @@ actual fun SwitchWithLabel(
 @Composable
 actual fun CommonTextField(
     presetText: String,
-    hint: String,
+    hint: String?,
     onFocusChanged: (Boolean) -> Unit,
     onChange: (String) -> Unit
 ) {
@@ -61,8 +63,10 @@ actual fun CommonTextField(
             onFocusChanged(it.isFocused)
         },
         singleLine = true,
-        label = {
-            CommonText(hint,)
+        label = hint ?.let {
+            {
+                CommonText(hint)
+            }
         }
     )
 }
@@ -93,4 +97,16 @@ actual fun <T> ButtonsPanel(
 @Composable
 actual fun DefaultDivider() {
     Divider()
+}
+
+@Composable
+actual fun DefaultSmallVerticalMargin() {
+    Spacer(Modifier.padding(0.dp, 4.dp))
+}
+
+@Composable
+actual fun DefaultBox(block: @Composable () -> Unit) {
+    Column(Modifier.padding(8.dp)) {
+        block()
+    }
 }

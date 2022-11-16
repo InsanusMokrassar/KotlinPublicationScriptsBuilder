@@ -11,7 +11,7 @@ expect fun CommonText(text: String, onClick: (() -> Unit)? = null)
 @Composable
 expect fun CommonTextField(
     presetText: String,
-    hint: String,
+    hint: String? = null,
     onFocusChanged: (Boolean) -> Unit = {},
     onChange: (String) -> Unit
 )
@@ -41,3 +41,9 @@ fun <T> ButtonsPanel(
 
 @Composable
 expect fun DefaultDivider()
+
+@Composable
+expect fun DefaultSmallVerticalMargin()
+
+@Composable
+expect fun DefaultBox(block: @Composable () -> Unit)

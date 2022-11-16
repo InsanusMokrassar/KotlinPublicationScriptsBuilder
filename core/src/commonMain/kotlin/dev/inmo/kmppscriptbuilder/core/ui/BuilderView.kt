@@ -5,6 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import dev.inmo.kmppscriptbuilder.core.models.Config
+import dev.inmo.kmppscriptbuilder.core.ui.utils.DefaultBox
 import dev.inmo.kmppscriptbuilder.core.ui.utils.DefaultDivider
 
 @Composable
@@ -44,10 +45,12 @@ class BuilderView : View() {
             config = it
         }
 
-        projectTypeView.build()
-        DefaultDivider()
-        licensesView.build()
-        DefaultDivider()
-        mavenInfoView.build()
+        DefaultBox {
+            projectTypeView.build()
+            DefaultDivider()
+            licensesView.build()
+            DefaultDivider()
+            mavenInfoView.build()
+        }
     }
 }

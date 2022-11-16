@@ -6,21 +6,17 @@ import dev.inmo.jsuikit.elements.DefaultInput
 import dev.inmo.jsuikit.elements.Divider
 import dev.inmo.jsuikit.elements.Flex
 import dev.inmo.jsuikit.elements.Icon
-import dev.inmo.jsuikit.elements.Label
 import dev.inmo.jsuikit.elements.drawAsFormInputPart
 import dev.inmo.jsuikit.modifiers.UIKitButton
-import dev.inmo.jsuikit.modifiers.UIKitCustom
 import dev.inmo.jsuikit.modifiers.UIKitFlex
 import dev.inmo.jsuikit.modifiers.UIKitForm
 import dev.inmo.jsuikit.modifiers.UIKitInverse
 import dev.inmo.jsuikit.modifiers.UIKitMargin
-import dev.inmo.jsuikit.modifiers.UIKitText
 import dev.inmo.jsuikit.modifiers.UIKitUtility
+import dev.inmo.jsuikit.modifiers.attrsBuilder
 import dev.inmo.jsuikit.modifiers.builder
 import dev.inmo.jsuikit.modifiers.include
-import dev.inmo.jsuikit.utils.Attrs
 import kotlinx.browser.window
-import kotlinx.coroutines.withTimeout
 import org.jetbrains.compose.web.attributes.InputType
 import org.jetbrains.compose.web.dom.Div
 import org.jetbrains.compose.web.dom.Legend
@@ -51,7 +47,7 @@ actual fun CommonText(text: String, onClick: (() -> Unit)?) {
 @Composable
 actual fun CommonTextField(
     presetText: String,
-    hint: String,
+    hint: String?,
     onFocusChanged: (Boolean) -> Unit,
     onChange: (String) -> Unit
 ) {
@@ -117,4 +113,16 @@ actual fun <T> ButtonsPanel(
 @Composable
 actual fun DefaultDivider() {
     Divider.Common()
+}
+
+@Composable
+actual fun DefaultSmallVerticalMargin() {
+    Div(UIKitMargin.Small.Top.builder())
+}
+
+@Composable
+actual fun DefaultBox(block: @Composable () -> Unit) {
+    Div(attrsBuilder(UIKitMargin.Small.Horizontal, UIKitMargin.Small.Vertical)) {
+        block()
+    }
 }

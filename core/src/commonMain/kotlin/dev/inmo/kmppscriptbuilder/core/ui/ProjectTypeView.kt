@@ -9,6 +9,7 @@ import dev.inmo.kmppscriptbuilder.core.models.JVMProjectType
 import dev.inmo.kmppscriptbuilder.core.models.MultiplatformProjectType
 import dev.inmo.kmppscriptbuilder.core.models.ProjectType
 import dev.inmo.kmppscriptbuilder.core.ui.utils.ButtonsPanel
+import dev.inmo.kmppscriptbuilder.core.ui.utils.DefaultSmallVerticalMargin
 import dev.inmo.kmppscriptbuilder.core.ui.utils.Drawer
 
 expect class ProjectTypeDrawer : Drawer<ProjectType>

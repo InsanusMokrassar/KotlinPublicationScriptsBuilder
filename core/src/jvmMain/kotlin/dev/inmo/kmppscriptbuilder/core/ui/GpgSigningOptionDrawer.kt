@@ -20,7 +20,7 @@ actual class GpgSigningOptionDrawer(
     @Composable
     override fun GpgSigning.draw() {
         if (mavenInfoView.gpgSignProperty == this) {
-            Button({}, Modifier.padding(8.dp)) {
+            Button({}, Modifier.padding(8.dp, 0.dp)) {
                 Text(name)
             }
         } else {
@@ -28,7 +28,7 @@ actual class GpgSigningOptionDrawer(
                 {
                     mavenInfoView.gpgSignProperty = this
                 },
-                Modifier.padding(8.dp)
+                Modifier.padding(8.dp, 0.dp)
             ) {
                 Text(name)
             }

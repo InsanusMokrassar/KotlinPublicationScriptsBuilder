@@ -2,12 +2,12 @@ package dev.inmo.kmppscriptbuilder.core.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import dev.inmo.kmppscriptbuilder.core.models.MavenPublishingRepository
+import dev.inmo.kmppscriptbuilder.core.ui.utils.CommonText
 import dev.inmo.kmppscriptbuilder.core.ui.utils.CommonTextField
-import dev.inmo.kmppscriptbuilder.core.ui.utils.Drawer
+import dev.inmo.kmppscriptbuilder.core.ui.utils.DefaultSmallVerticalMargin
 
 class RepositoryState(
     name: String = "",
@@ -38,13 +38,16 @@ class RepositoriesView : ListView<RepositoryState>("Repositories info") {
 
     @Composable
     override fun buildView(item: RepositoryState) {
+        CommonText("Repository name")
         CommonTextField(
             item.name,
-            "Repository name",
+            "This name will be used to identify repository in gradle"
         ) { item.name = it }
+        DefaultSmallVerticalMargin()
+        CommonText("Repository url")
         CommonTextField(
             item.url,
-            "Repository url",
+            "For example: https://repo.maven.apache.org/maven2/"
         ) { item.url = it }
     }
 

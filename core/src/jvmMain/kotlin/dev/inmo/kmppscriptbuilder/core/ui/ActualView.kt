@@ -8,10 +8,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import dev.inmo.kmppscriptbuilder.core.ui.utils.DefaultSmallVerticalMargin
 import dev.inmo.kmppscriptbuilder.core.ui.utils.TitleText
 
 actual abstract class View {
-    internal open val defaultModifier = Modifier.fillMaxWidth().padding(8.dp)
+    internal open val defaultModifier = Modifier.fillMaxWidth()
     @Composable
     actual abstract fun build()
 }
@@ -22,10 +23,11 @@ actual fun View.DrawVertically(
     block: @Composable () -> Unit
 ) {
     TitleText(title)
+    DefaultSmallVerticalMargin()
 
     Column(defaultModifier) {
         block()
     }
 
-    Spacer(Modifier.fillMaxWidth().height(8.dp))
+    DefaultSmallVerticalMargin()
 }

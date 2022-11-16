@@ -7,7 +7,9 @@ import dev.inmo.kmppscriptbuilder.core.models.SonatypeRepository
 import dev.inmo.kmppscriptbuilder.core.models.defaultProjectDescription
 import dev.inmo.kmppscriptbuilder.core.models.defaultProjectName
 import dev.inmo.kmppscriptbuilder.core.ui.utils.ButtonsPanel
+import dev.inmo.kmppscriptbuilder.core.ui.utils.CommonText
 import dev.inmo.kmppscriptbuilder.core.ui.utils.CommonTextField
+import dev.inmo.kmppscriptbuilder.core.ui.utils.DefaultSmallVerticalMargin
 import dev.inmo.kmppscriptbuilder.core.ui.utils.Drawer
 import dev.inmo.kmppscriptbuilder.core.ui.utils.SwitchWithLabel
 
@@ -56,21 +58,28 @@ class MavenInfoView : VerticalView("Project information") {
     private val gpgSigningDrawer = GpgSigningOptionDrawerWithView(this)
 
     override val content: @Composable () -> Unit = {
+        CommonText("Public project name")
         CommonTextField(
             projectNameProperty,
-            "Public project name",
+            "\${project.name}",
         ) { projectNameProperty = it }
+        DefaultSmallVerticalMargin()
+        CommonText("Public project description")
         CommonTextField(
             projectDescriptionProperty,
-            "Public project description",
+            "\${project.name}",
         ) { projectDescriptionProperty = it }
+        DefaultSmallVerticalMargin()
+        CommonText("Public project URL")
         CommonTextField(
             projectUrlProperty,
-            "Public project URL",
+            "Type url to github or other source with readme",
         ) { projectUrlProperty = it }
+        DefaultSmallVerticalMargin()
+        CommonText("Public project VCS URL (with .git)")
         CommonTextField(
             projectVcsUrlProperty,
-            "Public project VCS URL (with .git)",
+            "Type url to github .git file"
         ) { projectVcsUrlProperty = it }
 
         ButtonsPanel(

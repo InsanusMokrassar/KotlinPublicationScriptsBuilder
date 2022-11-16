@@ -2,11 +2,13 @@ package dev.inmo.kmppscriptbuilder.core.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import dev.inmo.kmppscriptbuilder.core.models.Developer
+import dev.inmo.kmppscriptbuilder.core.ui.utils.CommonText
 import dev.inmo.kmppscriptbuilder.core.ui.utils.CommonTextField
+import dev.inmo.kmppscriptbuilder.core.ui.utils.DefaultBox
+import dev.inmo.kmppscriptbuilder.core.ui.utils.DefaultSmallVerticalMargin
 
 class DeveloperState(
     id: String = "",
@@ -38,17 +40,19 @@ class DevelopersView : ListView<DeveloperState>("Developers info") {
     override fun createItem(): DeveloperState = DeveloperState()
     @Composable
     override fun buildView(item: DeveloperState) {
+        CommonText("Developer username")
         CommonTextField(
             item.id,
-            "Developer username",
         ) { item.id = it }
+        DefaultSmallVerticalMargin()
+        CommonText("Developer name")
         CommonTextField(
             item.name,
-            "Developer name",
         ) { item.name = it }
+        DefaultSmallVerticalMargin()
+        CommonText("Developer E-Mail")
         CommonTextField(
             item.eMail,
-            "Developer E-Mail",
         ) { item.eMail = it }
     }
 }

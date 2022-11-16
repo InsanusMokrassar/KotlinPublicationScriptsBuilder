@@ -28,34 +28,10 @@ actual object LicensesDrawer : Drawer<LicensesView> {
                 it.title,
                 UIKitButton.Type.Text
             ) { _ ->
-                licensesListState.add(it.toLicenseState())
+                itemsList.add(it.toLicenseState())
                 licenseSearchFilter = ""
             }
             Divider.Common()
-        }
-
-        DefaultButton("Add empty license", UIKitButton.Type.Primary, UIKitMargin.Small, UIKitUtility.NoTransform, UIKitUtility.Border.Rounded) {
-            licensesListState.add(LicenseState())
-        }
-
-        licensesListState.forEach { license ->
-            Div(UIKitMargin.Small.builder()) {
-                CommonTextField(
-                    license.id,
-                    "License ID",
-                ) { license.id = it }
-                CommonTextField(
-                    license.title,
-                    "License title",
-                ) { license.title = it }
-                CommonTextField(
-                    license.url ?: "",
-                    "License URL",
-                ) { license.url = it }
-                DefaultButton("Remove", UIKitButton.Type.Default, UIKitMargin.Small, UIKitUtility.NoTransform, UIKitUtility.Border.Rounded) {
-                    licensesListState.remove(license)
-                }
-            }
         }
     }
 }

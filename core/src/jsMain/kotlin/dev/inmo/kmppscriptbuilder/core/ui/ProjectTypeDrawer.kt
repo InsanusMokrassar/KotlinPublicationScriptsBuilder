@@ -16,9 +16,9 @@ actual class ProjectTypeDrawer(
     @Composable
     override fun ProjectType.draw() {
         if (projectTypeView.projectType == this) {
-            DefaultButton(name, UIKitButton.Type.Primary, UIKitMargin.Small.Horizontal, UIKitUtility.NoTransform, UIKitUtility.Border.Rounded)
+            DefaultButton(name, UIKitButton.Type.Primary, UIKitButton.Size.Small, UIKitMargin.Small.Horizontal, UIKitUtility.NoTransform, UIKitUtility.Border.Rounded)
         } else {
-            DefaultButton(name, UIKitButton.Type.Default, UIKitMargin.Small.Horizontal, UIKitUtility.NoTransform, UIKitUtility.Border.Rounded) {
+            DefaultButton(name, UIKitButton.Type.Default, UIKitButton.Size.Small, UIKitMargin.Small.Horizontal, UIKitUtility.NoTransform, UIKitUtility.Border.Rounded) {
                 projectTypeView.projectType = this
             }
         }

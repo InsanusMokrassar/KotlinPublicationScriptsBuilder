@@ -21,7 +21,7 @@ actual class ProjectTypeDrawer(
     @Composable
     override fun ProjectType.draw() {
         if (projectTypeView.projectType == this) {
-            Button({}, Modifier.padding(8.dp)) {
+            Button({}, Modifier.padding(8.dp, 0.dp)) {
                 Text(name)
             }
         } else {
@@ -29,7 +29,7 @@ actual class ProjectTypeDrawer(
                 {
                     projectTypeView.projectType = this
                 },
-                Modifier.padding(8.dp)
+                Modifier.padding(8.dp, 0.dp)
             ) {
                 Text(name)
             }
