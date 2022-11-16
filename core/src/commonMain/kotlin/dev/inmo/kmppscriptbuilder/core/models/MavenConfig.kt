@@ -53,6 +53,11 @@ data class MavenPublishingRepository(
             val usernameProperty: String,
             val passwordProperty: String
         ): CredentialsType {
+            constructor(baseParameter: String) : this(
+                "${baseParameter.uppercase()}_USER",
+                "${baseParameter.uppercase()}_PASSWORD",
+            )
+
             override fun buildCheckPart(): String = "(project.hasProperty('${usernameProperty}') || System.getenv('${usernameProperty}') != null) && (project.hasProperty('${passwordProperty}') || System.getenv('${passwordProperty}') != null)"
             override fun buildCredsPart(): String {
 return """

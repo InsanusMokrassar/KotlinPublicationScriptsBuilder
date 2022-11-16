@@ -87,7 +87,8 @@ actual fun TitleText(text: String) {
 actual fun <T> ButtonsPanel(
     title: String,
     data: Iterable<T>,
-    itemDrawer: @Composable (T) -> Unit) {
+    itemDrawer: @Composable (T) -> Unit
+) {
     Row {
         Text(title, Modifier.padding(8.dp))
         data.forEach { itemDrawer(it) }
