@@ -1,15 +1,15 @@
 [versions]
 
-kt = "1.7.20"
-kt-serialization = "1.4.1"
+kt = "1.8.20"
+kt-serialization = "1.5.0"
 kt-coroutines = "1.6.4"
 
-jb-compose = "1.2.1"
-jb-dokka = "1.7.20"
-microutils = "0.14.2"
-kjsuikit = "0.4.1"
+jb-compose = "1.4.0"
+jb-dokka = "1.8.10"
+microutils = "0.18.0"
+kjsuikit = "0.7.0"
 
-ktor = "2.1.3"
+ktor = "2.3.0"
 
 gh-release = "2.4.1"
 
