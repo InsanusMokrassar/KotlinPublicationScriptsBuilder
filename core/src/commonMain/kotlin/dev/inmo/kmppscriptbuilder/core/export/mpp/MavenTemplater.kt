@@ -7,7 +7,7 @@ fun MavenConfig.buildMultiplatformMavenConfig(licenses: List<License>): String =
 apply plugin: 'maven-publish'
 
 task javadocsJar(type: Jar) {
-    classifier = 'javadoc'
+    archiveClassifier = 'javadoc'
 }
 
 publishing {

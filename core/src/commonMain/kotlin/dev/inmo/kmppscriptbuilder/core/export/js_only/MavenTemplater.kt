@@ -7,13 +7,13 @@ fun MavenConfig.buildJsOnlyMavenConfig(licenses: List<License>): String = """
 apply plugin: 'maven-publish'
 
 task javadocJar(type: Jar) {
-    classifier = 'javadoc'
+    archiveClassifier = 'javadoc'
 }
 task sourcesJar(type: Jar) {
     kotlin.sourceSets.all {
         from(kotlin)
     }
-    classifier = 'sources'
+    archiveClassifier = 'sources'
 }
 
 publishing {

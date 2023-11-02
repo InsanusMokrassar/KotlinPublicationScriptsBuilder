@@ -20,6 +20,12 @@ if (project.hasProperty("signing.gnupg.keyName")) {
             dependsOn(it)
         }
     }
+
+    // Workaround to make android sign operations depend on signing tasks
+    project.getTasks().withType(AbstractPublishToMaven.class).configureEach {
+        def signingTasks = project.getTasks().withType(Sign.class)
+        mustRunAfter(signingTasks)
+    }
 }
 """
     GpgSigning.Enabled ->
