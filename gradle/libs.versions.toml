@@ -7,7 +7,7 @@ kt-coroutines = "1.7.3"
 jb-compose = "1.5.10"
 jb-dokka = "1.9.10"
 microutils = "0.20.11"
-kjsuikit = "0.7.2"
+kjsuikit = "0.7.3"
 
 ktor = "2.3.5"
 
