@@ -1,10 +1,14 @@
 package dev.inmo.kmppscriptbuilder.core.export.jvm_only
 
+import dev.inmo.kmppscriptbuilder.core.export.generateCentralSonatypeUploadingPart
+import dev.inmo.kmppscriptbuilder.core.export.generateCentralSonatypeUploadingPartImports
 import dev.inmo.kmppscriptbuilder.core.export.generateMavenConfig
 import dev.inmo.kmppscriptbuilder.core.models.*
 
 fun MavenConfig.buildJvmOnlyMavenConfig(licenses: List<License>): String = """
+${if (includeCentralSonatypeUploadingScript) "$generateCentralSonatypeUploadingPartImports\n" else ""}
 apply plugin: 'maven-publish'
+${if (includeCentralSonatypeUploadingScript) "$generateCentralSonatypeUploadingPart\n" else ""}
 
 task javadocJar(type: Jar) {
     from javadoc

@@ -26,6 +26,7 @@ data class MavenConfig(
     val gpgSigning: GpgSigning = GpgSigning.Disabled,
     @Deprecated("Replaced with gpgSigning")
     val includeGpgSigning: Boolean = false,
+    val includeCentralSonatypeUploadingScript: Boolean = false,
 )
 
 @Serializable
@@ -61,8 +62,7 @@ return """
         credentials {
             username = project.hasProperty('${usernameProperty}') ? project.property('${usernameProperty}') : System.getenv('${usernameProperty}')
             password = project.hasProperty('${passwordProperty}') ? project.property('${passwordProperty}') : System.getenv('${passwordProperty}')
-        }
-"""
+        }"""
             }
 
             companion object {
@@ -89,8 +89,7 @@ return """
 
         authentication {
             header(HttpHeaderAuthentication)
-        }
-"""
+        }"""
             }
 
             companion object {
@@ -119,3 +118,4 @@ ${credsType.buildCredsPart()}
 }
 
 val SonatypeRepository = MavenPublishingRepository("sonatype", "https://oss.sonatype.org/service/local/staging/deploy/maven2/")
+val CentralSonatypeRepository = MavenPublishingRepository("sonatype", "https://ossrh-staging-api.central.sonatype.com/service/local/staging/deploy/maven2/")

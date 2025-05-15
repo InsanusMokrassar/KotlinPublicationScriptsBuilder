@@ -1,6 +1,7 @@
 package dev.inmo.kmppscriptbuilder.core.ui
 
 import androidx.compose.runtime.*
+import dev.inmo.kmppscriptbuilder.core.models.CentralSonatypeRepository
 import dev.inmo.kmppscriptbuilder.core.models.GpgSigning
 import dev.inmo.kmppscriptbuilder.core.models.MavenConfig
 import dev.inmo.kmppscriptbuilder.core.models.SonatypeRepository
@@ -23,22 +24,31 @@ class MavenInfoView : VerticalView("Project information") {
     internal var projectVcsUrlProperty by mutableStateOf("")
     internal var gpgSignProperty by mutableStateOf<GpgSigning>(GpgSigning.Disabled)
     internal var publishToMavenCentralProperty by mutableStateOf(false)
+    internal var publishToCentralSonatypeProperty by mutableStateOf(false)
+    internal var includeCentralSonatypeUploadingScriptProperty by mutableStateOf(false)
     internal val developersView = DevelopersView()
     internal val repositoriesView = RepositoriesView()
 
     var mavenConfig: MavenConfig
         get() = MavenConfig(
-            projectNameProperty.ifBlank { defaultProjectName },
-            projectDescriptionProperty.ifBlank { defaultProjectDescription },
-            projectUrlProperty,
-            projectVcsUrlProperty,
-            developersView.developers,
-            repositoriesView.repositories + if (publishToMavenCentralProperty) {
-                listOf(SonatypeRepository)
+            name = projectNameProperty.ifBlank { defaultProjectName },
+            description = projectDescriptionProperty.ifBlank { defaultProjectDescription },
+            url = projectUrlProperty,
+            vcsUrl = projectVcsUrlProperty,
+            developers = developersView.developers,
+            repositories = repositoriesView.repositories + if (publishToMavenCentralProperty) {
+                listOf(
+                    if (publishToCentralSonatypeProperty) {
+                        CentralSonatypeRepository
+                    } else {
+                        SonatypeRepository
+                    }
+                )
             } else {
                 emptyList()
             },
-            gpgSignProperty
+            gpgSigning = gpgSignProperty,
+            includeCentralSonatypeUploadingScript = includeCentralSonatypeUploadingScriptProperty
         )
         set(value) {
             projectNameProperty = value.name
@@ -50,9 +60,11 @@ class MavenInfoView : VerticalView("Project information") {
             } else {
                 value.gpgSigning
             }
-            publishToMavenCentralProperty = value.repositories.any { it == SonatypeRepository }
+            publishToMavenCentralProperty = value.repositories.any { it == SonatypeRepository || it == CentralSonatypeRepository }
             developersView.developers = value.developers
-            repositoriesView.repositories = value.repositories.filter { it != SonatypeRepository }
+            repositoriesView.repositories = value.repositories.filter { it != SonatypeRepository && it != CentralSonatypeRepository }
+            publishToCentralSonatypeProperty = value.repositories.any { it == CentralSonatypeRepository }
+            includeCentralSonatypeUploadingScriptProperty = value.includeCentralSonatypeUploadingScript
         }
 
     private val gpgSigningDrawer = GpgSigningOptionDrawerWithView(this)
@@ -100,6 +112,20 @@ class MavenInfoView : VerticalView("Project information") {
             publishToMavenCentralProperty,
             placeSwitchAtTheStart = true
         ) { publishToMavenCentralProperty = it }
+        if (publishToMavenCentralProperty) {
+            SwitchWithLabel(
+                "Use Central Sonatype instead of OSSRH (OSSRH has been deprecated)",
+                publishToCentralSonatypeProperty,
+                placeSwitchAtTheStart = true
+            ) { publishToCentralSonatypeProperty = it }
+            if (publishToCentralSonatypeProperty) {
+                SwitchWithLabel(
+                    "Add 'uploadSonatypePublication' root project task (required for Central Sonatype publishing)",
+                    includeCentralSonatypeUploadingScriptProperty,
+                    placeSwitchAtTheStart = true
+                ) { includeCentralSonatypeUploadingScriptProperty = it }
+            }
+        }
         developersView.build()
         repositoriesView.build()
     }
