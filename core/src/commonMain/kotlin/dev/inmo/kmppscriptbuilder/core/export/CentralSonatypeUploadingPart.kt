@@ -6,7 +6,9 @@ const val generateCentralSonatypeUploadingPartImports = """import java.nio.chars
 import java.net.http.HttpClient
 import java.net.http.HttpRequest
 import java.net.http.HttpResponse"""
-const val generateCentralSonatypeUploadingPart = """if ((project.hasProperty('SONATYPE_USER') || System.getenv('SONATYPE_USER') != null) && (project.hasProperty('SONATYPE_PASSWORD') || System.getenv('SONATYPE_PASSWORD') != null)) {
+const val generateCentralSonatypeUploadingPart = """// This script work based on https://ossrh-staging-api.central.sonatype.com/swagger-ui/#/default/manual_upload_repository
+// and getting available open repos and just uploading them
+if ((project.hasProperty('SONATYPE_USER') || System.getenv('SONATYPE_USER') != null) && (project.hasProperty('SONATYPE_PASSWORD') || System.getenv('SONATYPE_PASSWORD') != null)) {
     def taskName = "uploadSonatypePublication"
     if (rootProject.tasks.names.contains(taskName) == false) {
         rootProject.tasks.register(taskName) {

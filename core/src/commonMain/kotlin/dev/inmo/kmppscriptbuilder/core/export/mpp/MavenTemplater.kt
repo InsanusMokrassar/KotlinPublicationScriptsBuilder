@@ -42,9 +42,9 @@ publishing {
                 }""" }}
             }
         }
-        repositories {
-            ${repositories.joinToString("\n            ") { it.build("            ") }}
-        }
+    }
+    repositories {
+        ${repositories.joinToString("\n        ") { it.build("        ") }}
     }
 }
     ${gpgSigning.generateMavenConfig()}
