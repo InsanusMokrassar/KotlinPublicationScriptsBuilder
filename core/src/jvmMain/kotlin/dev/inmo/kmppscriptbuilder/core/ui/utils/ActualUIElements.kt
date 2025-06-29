@@ -12,6 +12,7 @@ import androidx.compose.material.Divider
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Switch
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -73,7 +74,11 @@ actual fun CommonTextField(
 
 @Composable
 actual fun CommonText(text: String, onClick: (() -> Unit)?) {
-    Text(text, modifier = Modifier.run { onClick ?.let { clickable(onClick = it) } ?: this })
+    onClick ?.let {
+        TextButton(it) {
+            Text(text)
+        }
+    } ?: Text(text)
 }
 
 @Composable
